@@ -8,7 +8,7 @@ if (isset($config['cloudamqphost'])) {
     $username = $config['cloudamqpuser'];
     $password = $config['cloudamqppass'];
     $port = $config['cloudamqpport'];
-    $topic = $config['cloudamqptopic'];
+    $topic = $config['cloudamqptopic'] . "/state_line" . "1"; // either one or 2 mayshe should be an array
   } else {
   $host = '192.168.42.2';
   $username = "admin";
@@ -25,7 +25,12 @@ if(!$mqtt->connect(true,NULL,$username,$password)){
 
 //currently subscribed topics
 $topics[$topic] = array("qos"=>0, "function"=>"procmsg");
+
+var_dump($topics);
+
+
 $mqtt->subscribe($topics,0);
+
 
 while($mqtt->proc()){
 }
