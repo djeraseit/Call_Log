@@ -6,8 +6,8 @@ function curl_get($Url,$username = 'admin', $password = 'admin'){
   // Now set some options (most are optional)
   $options = array(
     CURLOPT_URL            => $Url,
-    CURLOPT_HEADER         => true,    
-    CURLOPT_VERBOSE        => true,
+    CURLOPT_HEADER         => false,    
+    CURLOPT_VERBOSE        => false,
     CURLOPT_RETURNTRANSFER => true,
     CURLOPT_USERAGENT => 'CallBlocker',
     CURLOPT_FOLLOWLOCATION => true,
@@ -86,7 +86,6 @@ function pb_alert($pbtoken = 'o.mjCLA2hY2n5jVnwGwHrIDO76KccJtIbl',$payload = arr
 
  // Close the cURL resource, and free system resources
  curl_close($ch);
-
  return $output;
 
 }
@@ -100,8 +99,6 @@ function youmailLookup($apikey = 'o.mjCLA2hY2n5jVnwGwHrIDO76KccJtIbl',$apisid = 
   $callerinfo = [];
   $callerinfo = $payload['callee'];
   $callerinfo = urlencode($payload['callerId']);
-  
-
   
   $data = http_build_query($callerinfo) . "&"; 
   $url = "https://dataapi.youmail.com/api/v2/{$phone}?" . $data;

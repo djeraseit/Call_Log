@@ -1,3 +1,4 @@
+#!/usr/bin/php
 #!/usr/sbin/php-cli
 <?php
 //php obihai2mqtt.php --obihai_host 192.168.42.2 --obihai_user admin --obihai_pass megalith --mqtt_host eagle.rmq.cloudamqp.com --mqtt_user rcndzvbo:rcndzvbo --mqtt_topic obihai --mqtt_pass E-BaZornNc1uuSID1kjuVmzDsj1UrxVY
@@ -50,11 +51,14 @@ curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_ANY);
 curl_setopt($curl, CURLOPT_NOPROXY, "*"); // no proxy
 curl_setopt($curl, CURLOPT_USERPWD, "$obihai_user:$obihai_pass");
 
+$output = curl_exec($curl);
+die($output);
+
 while (true)
 {
   $states = array();
-  $xml = new SimpleXMLElement(curl_exec($curl));
-
+  //$xml = new SimpleXMLElement($output);
+  $xml = simplexml_load_file($output, "SimpleXMLElement", LIBXML_NOERROR |  LIBXML_ERR_NONE); //ignore errors
   $parameters = $xml->xpath('//parameter');
   foreach ($parameters as $parameter)
   {

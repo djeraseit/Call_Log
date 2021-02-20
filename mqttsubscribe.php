@@ -2,21 +2,26 @@
 
 require(__DIR__."/phpMQTT.php");
 require_once(__DIR__."/config.php");
+$topic = [];
 
 if (isset($config['cloudamqphost'])) {
     $host = $config['cloudamqphost'];
     $username = $config['cloudamqpuser'];
     $password = $config['cloudamqppass'];
     $port = $config['cloudamqpport'];
-    $topic = $config['cloudamqptopic'] . "/state_line" . "1"; // either one or 2 mayshe should be an array
+    $line1 = $config['cloudamqptopic'] . "/state_line" . "1"; // either one or 2 mayshe should be an array
+    $line2 = $config['cloudamqptopic'] . "/state_line" . "2"; // either one or 2 mayshe should be an array
   } else {
   $host = '192.168.42.2';
   $username = "admin";
   $password = "admin";
   $port = 1883;
-  $topic = "obihai" . "/state_line" . "1"; // either one or 2 mayshe should be an array
+  $line1 = "obihai" . "/state_line" . "1"; // either one or 2 mayshe should be an array
+  $line2 = "obihai" . "/state_line" . "2"; // either one or 2 mayshe should be an array
   }
+  $topic = array($line1,$line2);
 
+//var_dump($topic);
 $mqtt = new bluerhinos\phpMQTT($host, $port, "obihai2mqtt_".rand());
 
 if(!$mqtt->connect(true,NULL,$username,$password)){
