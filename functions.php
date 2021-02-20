@@ -97,8 +97,13 @@ function youmailLookup($apikey = 'o.mjCLA2hY2n5jVnwGwHrIDO76KccJtIbl',$apisid = 
   $payload = array('callee'=>'9999999999','callerId'=>'Tom Ford');
 
   }  
+  $callerinfo = [];
+  $callerinfo = $payload['callee'];
+  $callerinfo = urlencode($payload['callerId']);
   
-  $data = http_build_query($paylod) . "&"; 
+
+  
+  $data = http_build_query($callerinfo) . "&"; 
   $url = "https://dataapi.youmail.com/api/v2/{$phone}?" . $data;
 $options = array(
   CURLOPT_URL            => $url,
