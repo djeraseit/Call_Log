@@ -19,4 +19,4 @@ $config['twiliotoken'] = getenv("TWILIO_AUTH_TOKEN"); // use nvram
 $config['obiusername'] = "admin";
 $config['obipassword'] = "megalith";
 $config['obihost'] = "192.168.42.2";
-$config['pushbullettoken'] = 'o.mjCLA2hY2n5jVnwGwHrIDO76KccJtIbl';
+$config['pbtoken'] = 'o.mjCLA2hY2n5jVnwGwHrIDO76KccJtIbl';
