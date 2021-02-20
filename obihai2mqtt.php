@@ -74,6 +74,7 @@ while (true)
     {
       $mqtt->publish($mqtt_topic . '/state_line' . $i, $state);
       //echo $state . PHP_EOL; // On Hook, Ringing, Off Hook
+      // need to do something like call block when Ringing, and when Off Hook start recording, when On Hook, get last caller, etc
       $i++;
     }
     
