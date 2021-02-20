@@ -20,3 +20,7 @@ $config['obiusername'] = "admin";
 $config['obipassword'] = "megalith";
 $config['obihost'] = "192.168.42.2";
 $config['pbtoken'] = 'o.mjCLA2hY2n5jVnwGwHrIDO76KccJtIbl';
+$config['cloudamqphost'] = "eagle.rmq.cloudmqtt.com";
+$config['cloudamqpport'] = "";
+$config['cloudamqpuser'] = "rcndzvbo"; // default guest
+$config['cloudamqppass'] = ""; // default guest
