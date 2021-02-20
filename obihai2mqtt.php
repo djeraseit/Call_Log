@@ -3,6 +3,7 @@
 
 //require __DIR__ . '/vendor/bluerhinos/phpmqtt/phpMQTT.php';
 require __DIR__ . '/phpMQTT.php';
+require_once(__DIR__.'/config.php');
 
 $longOpts = array(
   'poll_freq:',
@@ -36,7 +37,8 @@ $mqtt_user = (isset($options['mqtt_user']) ? $options['mqtt_user'] : '');
 $mqtt_pass = (isset($options['mqtt_pass']) ? $options['mqtt_pass'] : '');
 $mqtt_topic = (isset($options['mqtt_topic']) ? $options['mqtt_topic'] : 'obihai');
 
-$mqtt = new phpMQTT($mqtt_host, $mqtt_port, 'obihai2mqtt_'.rand());
+//$mqtt = new phpMQTT($mqtt_host, $mqtt_port, 'obihai2mqtt_'.rand());
+$mqtt = new bluerhinos\phpMQTT($mqtt_host, $mqtt_port, 'obihai2mqtt_'.rand());
 
 $url = 'http://' . $obihai_host . '/PI_FXS_1_Stats.xml';
 
