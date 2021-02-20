@@ -43,6 +43,7 @@ try {
 }
 if ($ch != null) curl_close($ch);
   //$states = [];
+  
   $xml = new SimpleXMLElement($raw_response);
 
   $parameters = $xml->xpath('//parameter');
