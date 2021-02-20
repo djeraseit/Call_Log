@@ -38,4 +38,6 @@ while($mqtt->proc()){
 $mqtt->close();
 function procmsg($topic,$msg){
   echo "Msg Recieved: $msg";
+  echo 'Msg Recieved: ' . date('r') . "\n";
+		echo "Topic: {$topic}\n\n";
 }
