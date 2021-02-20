@@ -14,13 +14,15 @@ ini_set( 'display_errors','1');
 
 $config = [];
 $config['numverifykey'] = 'xxx';
+$config['amqpurl'] = 'amqps://rcndzvbo:E-BaZornNc1uuSID1kjuVmzDsj1UrxVY@eagle.rmq.cloudamqp.com/rcndzvbo';
 $config['twiliosid'] = getenv("TWILIO_ACCOUNT_SID"); // use nvram
 $config['twiliotoken'] = getenv("TWILIO_AUTH_TOKEN"); // use nvram
 $config['obiusername'] = "admin";
 $config['obipassword'] = "megalith";
 $config['obihost'] = "192.168.42.2";
 $config['pbtoken'] = 'o.mjCLA2hY2n5jVnwGwHrIDO76KccJtIbl';
-$config['cloudamqphost'] = "eagle.rmq.cloudmqtt.com";
+$config['cloudamqphost'] = "eagle.rmq.cloudmqtt.com"; // or eagle-01.rmq.cloudamqp.com (not loadbalanced)
 $config['cloudamqpport'] = "";
-$config['cloudamqpuser'] = "rcndzvbo"; // default guest
-$config['cloudamqppass'] = ""; // default guest
+$config['cloudamqpvhost'] = "rcndzvbo"; 
+$config['cloudamqpuser'] = "rcndzvbo"; 
+$config['cloudamqppass'] = "E-BaZornNc1uuSID1kjuVmzDsj1UrxVY"; 
