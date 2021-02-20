@@ -59,7 +59,7 @@ function pb_alert($pbtoken = 'o.mjCLA2hY2n5jVnwGwHrIDO76KccJtIbl',$payload = arr
     CURLOPT_URL            => 'https://api.pushbullet.com/v2/pushes',
     CURLOPT_POST => true,
     CURLOPT_POSTFIELDS => $payload,
-    CURLOPT_HEADER         => true,
+    CURLOPT_HEADER         => false,
     CURLOPT_HTTPHEADER => array("Content-Type:application/json","Access-Token:{$pbtoken}"),    
     CURLOPT_VERBOSE        => false,
     CURLOPT_RETURNTRANSFER => true,
