@@ -6,14 +6,17 @@ $opencnam = 'https://api.opencnam.com/v2/phone/+15555555555';
 
 if (isset($config['obihost'])) {
   $host = $config['obihost'];
+  $username = $config['obiusername'];
+  $password = $config['obipassword'];
 } else {
 $host = '192.168.42.2';
+$username = "admin";
+$password = "admin";
 }
 $pagename = 'PI_FXS_1_Stats.xml';
 $scheme = 'http';
 $url = "{$scheme}://{$host}/{$pagename}";
-$username = "admin";
-$password = "admin";
+
 $options = array(
         CURLOPT_URL            => $url,
         CURLOPT_RETURNTRANSFER => true,
@@ -21,6 +24,7 @@ $options = array(
         CURLOPT_SSL_VERIFYPEER => false,    // for https
         CURLOPT_USERPWD        => $username . ":" . $password,
         CURLOPT_HTTPAUTH       => CURLAUTH_DIGEST,
+        CURLOPT_NOPROXY => '*', // do not use proxy
 );
 $ch = curl_init();
 curl_setopt_array( $ch, $options );

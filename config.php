@@ -1,5 +1,8 @@
 <?php
 
+error_reporting(E_ALL); 
+ini_set( 'display_errors','1');
+
 $config = [];
 $config['numverifykey'] = 'xxx';
 $config['twiliosid'] = getenv("TWILIO_ACCOUNT_SID"); // use nvram

@@ -1,7 +1,5 @@
 <?php
-
-error_reporting(E_ALL); 
-ini_set( 'display_errors','1');
+require_once(__DIR__.'/config.php');
 require_once(__DIR__.'/simple_html_dom.php');
 $opencnam = 'https://api.opencnam.com/v2/phone/+155555555';
 $host = 'obi110'; //hostname or IP
