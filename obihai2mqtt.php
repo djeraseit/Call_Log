@@ -1,6 +1,6 @@
 #!/usr/bin/php
 <?php
-//php obihai2mqtt.php --obihai_host 192.168.42.2 --obihai_user admin --obihai_pass megalith --mqtt_host eagle.rmq.cloudamqp.com --mqtt_user rcndzvbo:rcndzvbo --mqtt_pass E-BaZornNc1uuSID1kjuVmzDsj1UrxVY
+//php obihai2mqtt.php --obihai_host 192.168.42.2 --obihai_user admin --obihai_pass megalith --mqtt_host eagle.rmq.cloudamqp.com --mqtt_user rcndzvbo:rcndzvbo --mqtt_topic obihai --mqtt_pass E-BaZornNc1uuSID1kjuVmzDsj1UrxVY
 
 //require __DIR__ . '/vendor/bluerhinos/phpmqtt/phpMQTT.php';
 require __DIR__ . '/phpMQTT.php';
@@ -76,8 +76,7 @@ while (true)
       //echo $state . PHP_EOL; // On Hook, Ringing, Off Hook
       // need to do something like call block when Ringing, and when Off Hook start recording, when On Hook, get last caller, etc
       $i++;
-    }
-    
+    }    
     $mqtt->close();
   }
   else

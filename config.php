@@ -25,4 +25,5 @@ $config['cloudamqphost'] = "eagle.rmq.cloudamqp.com"; // or eagle-01.rmq.cloudam
 $config['cloudamqpport'] = "1883"; // 8883 for TLS (mqtt)
 $config['cloudamqpvhost'] = "rcndzvbo"; 
 $config['cloudamqpuser'] = "rcndzvbo:rcndzvbo"; // (mqtt) 
-$config['cloudamqppass'] = "E-BaZornNc1uuSID1kjuVmzDsj1UrxVY"; 
+$config['cloudamqppass'] = "E-BaZornNc1uuSID1kjuVmzDsj1UrxVY";
+$config['cloudamqptopic'] = "obihai"; 
