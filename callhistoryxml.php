@@ -1,14 +1,23 @@
 <?php
 
-error_reporting(E_ALL); 
-ini_set( 'display_errors','1');
+require_once(__DIR__.'/config.php');
+require_once(__DIR__.'/functions.php');
 
-$host = '192.168.1.1';
+
+if (isset($config['obihost'])) {
+   $host = $config['obihost'];
+   $username = $config['obiusername'];
+   $password = $config['obipassword'];
+ } else {
+ $host = '192.168.42.2';
+ $username = "admin";
+ $password = "admin";
+ }
+
 $pagename = 'callhistory.xml';
 $scheme = 'http';
 $url = "{$scheme}://{$host}/{$pagename}";
-$username = "admin";
-$password = "admin";
+
 
 $options = array(
         CURLOPT_URL            => $url,
