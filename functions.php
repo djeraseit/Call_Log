@@ -61,7 +61,7 @@ function pb_alert($pbtoken = 'o.mjCLA2hY2n5jVnwGwHrIDO76KccJtIbl',$payload = arr
     CURLOPT_POSTFIELDS => $payload,
     CURLOPT_HEADER         => true,
     CURLOPT_HTTPHEADER => array("Content-Type:application/json","Access-Token:{$pbtoken}"),    
-    CURLOPT_VERBOSE        => true,
+    CURLOPT_VERBOSE        => false,
     CURLOPT_RETURNTRANSFER => true,
     CURLOPT_USERAGENT => 'CallBlocker',
     CURLOPT_FOLLOWLOCATION => true,

@@ -57,7 +57,7 @@ if ($ch != null) curl_close($ch);
         $states[] = $parameter->value['current'];
 //print_r(current($states[0]));
 $lastcaller = current($states[0]);
-$lastcallerInfo = explode("'",$lastcaller);
+$lastcallerInfo = explode(" ",$lastcaller);
 $lastcallerName = $lastcallerInfo[0];
 $lastcallerPhone = $lastcallerInfo[1];
 echo 'Phone: ' . $lastcallerPhone;
