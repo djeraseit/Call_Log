@@ -1,5 +1,6 @@
 #!/usr/bin/php
 <?php
+//php obihai2mqtt.php --obihai_host 192.168.42.2 --obihai_user admin --obihai_pass megalith --mqtt_host eagle.rmq.cloudamqp.com --mqtt_user rcndzvbo:rcndzvbo --mqtt_pass E-BaZornNc1uuSID1kjuVmzDsj1UrxVY
 
 //require __DIR__ . '/vendor/bluerhinos/phpmqtt/phpMQTT.php';
 require __DIR__ . '/phpMQTT.php';
@@ -72,6 +73,7 @@ while (true)
     foreach ($states as $state)
     {
       $mqtt->publish($mqtt_topic . '/state_line' . $i, $state);
+      //echo $state . PHP_EOL; // On Hook, Ringing, Off Hook
       $i++;
     }
     
