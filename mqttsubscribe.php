@@ -26,7 +26,7 @@ if(!$mqtt->connect(true,NULL,$username,$password)){
 //currently subscribed topics
 $topics[$topic] = array("qos"=>0, "function"=>"procmsg");
 
-var_dump($topics);
+//var_dump($topics);
 
 
 $mqtt->subscribe($topics,0);
