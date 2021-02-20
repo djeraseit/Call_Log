@@ -14,10 +14,10 @@ if (isset($config['cloudamqphost'])) {
   $username = "admin";
   $password = "admin";
   $port = 1883;
-  $topic = "obihai" . "/state_line" . "1"; // either one or 2
+  $topic = "obihai" . "/state_line" . "1"; // either one or 2 mayshe should be an array
   }
 
-$mqtt = new bluerhinos\phpMQTT($host, $port, "ClientID".rand());
+$mqtt = new bluerhinos\phpMQTT($host, $port, "obihai2mqtt_".rand());
 
 if(!$mqtt->connect(true,NULL,$username,$password)){
   exit(1);
