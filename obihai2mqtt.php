@@ -46,6 +46,7 @@ $curl = curl_init();
 curl_setopt($curl, CURLOPT_URL, $url);
 curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
 curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_ANY);
+curl_setopt($curl, CURLOPT_NOPROXY, "*"); // no proxy
 curl_setopt($curl, CURLOPT_USERPWD, "$obihai_user:$obihai_pass");
 
 while (true)
