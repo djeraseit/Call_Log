@@ -8,7 +8,6 @@ $pagename = 'callstatus.htm';
 $scheme = 'http';
 
 
-
 if (isset($config['obihost'])) {
     $host = $config['obihost'];
     $username = $config['obiusername'];
