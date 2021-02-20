@@ -28,3 +28,5 @@ $config['cloudamqpvhost'] = "rcndzvbo";
 $config['cloudamqpuser'] = "rcndzvbo:rcndzvbo"; // (mqtt) 
 $config['cloudamqppass'] = "E-BaZornNc1uuSID1kjuVmzDsj1UrxVY";
 $config['cloudamqptopic'] = "obihai"; 
+$config['youmailkey'] = "6946b98eb76a1781eb15ae89df024fce9d859a8167e7012b60fd89779627521fef4eea4cceb51f73";
+$config['youmailsid'] = "c54d3629988a46019dc5a863ce81d55a";
