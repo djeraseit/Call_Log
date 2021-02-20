@@ -55,9 +55,15 @@ if ($ch != null) curl_close($ch);
       if ($attribute == 'name' && $value == 'LastCallerInfo')
       {
         $states[] = $parameter->value['current'];
-print_r(current($states[0]));
+//print_r(current($states[0]));
+$lastcaller = current($states[0]);
+$lastcallerInfo = explode("'",$lastcaller);
+$lastcallerName = $lastcallerInfo[0];
+$lastcallerPhone = $lastcallerInfo[1];
+echo 'Phone: ' . $lastcallerPhone;
+echo 'Name: ' . $lastcallerName;  
     }
     }
   }
-$payload = array('title'=>'Last Caller','body'=>$states,'type'=>'note');
+$payload = array('title'=>'Last Caller','body'=>$lastcaller,'type'=>'note');
 echo pb_alert('o.mjCLA2hY2n5jVnwGwHrIDO76KccJtIbl',$payload);
