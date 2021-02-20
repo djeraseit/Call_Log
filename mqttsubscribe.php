@@ -2,7 +2,7 @@
 
 require(__DIR__."/phpMQTT.php");
 require_once(__DIR__."/config.php");
-$topic = [];
+//$topic = [];
 
 if (isset($config['cloudamqphost'])) {
     $host = $config['cloudamqphost'];
@@ -29,20 +29,19 @@ if(!$mqtt->connect(true,NULL,$username,$password)){
 }
 
 //currently subscribed topics
-$topics[$topic] = array("qos"=>0, "function"=>"procmsg");
+//$topics[$topic] = array("qos"=>0, "function"=>"procmsg");
+$topics[$line1] = array("qos"=>0, "function"=>"procmsg");
 
 //var_dump($topics);
 
-
 $mqtt->subscribe($topics,0);
-
 
 while($mqtt->proc()){
 }
 
 $mqtt->close();
 function procmsg($topic,$msg){
-  echo "Msg Recieved: $msg";
-  echo 'Msg Recieved: ' . date('r') . "\n";
-		echo "Topic: {$topic}\n\n";
+  echo "Msg Recieved: $msg" . PHP_EOL;
+  echo 'Date Recieved: ' . date('r') . PHP_EOL;
+	echo "Topic: {$topic}" . PHP_EOL;
 }
