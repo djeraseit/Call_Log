@@ -17,7 +17,9 @@ function curl_get($Url,$username = 'admin', $password = 'admin'){
     CURLOPT_HTTPAUTH       => CURLAUTH_DIGEST,
     CURLOPT_TIMEOUT => 5,
     CURLOPT_CONNECTTIMEOUT => 5,
-    CURLOPT_REFERER => 'https://www.theodis.com'
+    CURLOPT_REFERER => 'https://www.theodis.com',
+    CURLOPT_TCP_KEEPALIVE => 1, // for callhistoryxml
+    CURLOPT_TCP_KEEPIDLE => 2, // for call historyxml
 );
  // OK cool - then let's create a new cURL resource handle
  $ch = curl_init();

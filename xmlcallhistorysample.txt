@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CallHistoryFile>
+<CallHistory date="2/19/2021" time="18:24:13">
+  <Terminal id="LINE1" dir="Inbound">
+    <Peer name="LINDA BUTLER" number="2817236339"/>
+    <Event time="18:24:13">Ringing</Event>
+    <Event time="18:32:51">End Call</Event>
+  </Terminal>
+  <Terminal id="PHONE1" dir="Inbound">
+    <Peer name="" number=""/>
+    <Event time="18:24:20">Call Connected</Event>
+  </Terminal>
+</CallHistory>
+<CallHistory date="1/3/2010" time="13:29:54">
+  <Terminal id="LINE1" dir="Inbound">
+    <Peer name="KNOXVILLE TN" number="8653311433"/>
+    <Event time="13:29:54">Ringing</Event>
+    <Event time="13:30:09">End Call</Event>
+  </Terminal>
+  <Terminal id="PHONE1" dir="Inbound">
+    <Peer name="" number=""/>
+  </Terminal>
+</CallHistory>
+<CallHistory date="1/3/2010" time="13:14:34">
+  <Terminal id="LINE1" dir="Inbound">
+    <Peer name="SALT LAKE CY,UT" number="8019721741"/>
+    <Event time="13:14:34">Ringing</Event>
+    <Event time="13:15:01">End Call</Event>
+  </Terminal>
+  <Terminal id="PHONE1" dir="Inbound">
+    <Peer name="" number=""/>
+  </Terminal>
+</CallHistory>
+</CallHistoryFile>

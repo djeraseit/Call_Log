@@ -31,7 +31,10 @@ $options = array(
         CURLOPT_USERPWD        => $username . ":" . $password,
         CURLOPT_HTTPAUTH       => CURLAUTH_DIGEST,
         CURLOPT_POST           => true,
-        CURLOPT_FAILONERROR => true
+        CURLOPT_FAILONERROR => true,
+        CURLOPT_TIMEOUT => 5,
+        CURLOPT_CONNECTTIMEOUT => 5,
+        CURLOPT_NOPROXY => '*', // do not use proxy
 );
 
 $ch = curl_init();
