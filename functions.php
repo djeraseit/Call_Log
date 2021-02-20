@@ -99,7 +99,7 @@ function youmailLookup($apikey = 'o.mjCLA2hY2n5jVnwGwHrIDO76KccJtIbl',$apisid = 
   }  
   
   $data = http_build_query($paylod) . "&"; 
-  $url = "https://dataapi.youmail.com/api/v2/{$phone}" . $data;
+  $url = "https://dataapi.youmail.com/api/v2/{$phone}?" . $data;
 $options = array(
   CURLOPT_URL            => $url,
   CURLOPT_HEADER         => false,
