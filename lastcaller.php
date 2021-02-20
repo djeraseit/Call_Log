@@ -1,5 +1,6 @@
 <?php
 require_once(__DIR__.'/config.php');
+require_once(__DIR__.'/functions.php');
 error_reporting(E_ALL); 
 ini_set( 'display_errors','1');
 $opencnam = 'https://api.opencnam.com/v2/phone/+15555555555';
