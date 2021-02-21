@@ -301,12 +301,10 @@ function callHistoryJson($xmldata) {
   $callhistoryjson = [];
 
   foreach ($array as $v => $call) {
-   // $keys = array_keys($call);
-   // $totalcalls = count($call);
-//  var_dump($totalcalls); // 200
+    var_dump($call);
+      die();
     foreach ($call as $caller){
-      //var_dump($caller);
-      //die();
+      
       $history['Name'] = $caller['Terminal'][0]['Peer']['@attributes']['name'];
       $history['Number'] = $caller['Terminal'][0]['Peer']['@attributes']['number'];
       $history['Direction'] = $caller['Terminal'][0]['@attributes']['dir'];
@@ -320,3 +318,6 @@ function callHistoryJson($xmldata) {
   return $callhistoryjson;
 }
 
+function openCNAM ($number) {
+  $endpoint = 'https://api.opencnam.com/v2/phone/+' . $number;
+}
