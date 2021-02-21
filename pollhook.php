@@ -102,26 +102,26 @@ $output = curl_exec($curl);
   
   $callerinfo = "";
 
- // if ($mqtt->connect(true, null, $mqtt_user, $mqtt_pass))
-  //{
+
     $i = 1;
     foreach ($states as $state)
     {
       // TODO: need to do something like call block when Ringing, and when Off Hook start recording, when On Hook, get last caller, etc
         if ($state == 'Ringing') {
-            $callerinfo = getCallerAndLookup($obihai_host, $obihai_user, $obihai_pass, $state);
-            //$hangup = hangup();
+            $callerinfo = json_decode(getCallerAndLookup($obihai_host, $obihai_user, $obihai_pass, $state),true);
+            $callername = $callerinfo['Name'];
+            $callernumber = $callerinfo['Number'];
+            $callerstart = $callerinfo['StartTime'];
+            $callerdirection = $callerinfo['Direction'];
+            $calleritem = $callerinfo['Item'];
+            //$hangup = hangup($calleritem);
+            // TODO: Get SPAM score if Direction is Inbound
+            // TODO: Add to address book if not already listed
         }
               echo $state . ' ' . $i . PHP_EOL; // On Hook, Ringing, Off Hook
               echo $callerinfo;      
       $i++;
     }    
-   // $mqtt->close();
- // }
- // else
-//  {
- //   print "Cannot connect to MQTT.\n";
- // }
-    
+
   sleep($poll_freq);
 }
