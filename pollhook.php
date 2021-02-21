@@ -45,7 +45,7 @@ if (!isset($options['obihai_host']))
   exit(1);
 }
 
-$poll_freq = (isset($options['poll_freq']) ? $options['poll_freq'] : 5);
+$poll_freq = (isset($options['poll_freq']) ? $options['poll_freq'] : 1);
 
 $obihai_host = $options['obihai_host'];
 $obihai_user = (isset($options['obihai_user']) ? $options['obihai_user'] : 'admin');
@@ -100,6 +100,7 @@ while (true)
     $i = 1;
     foreach ($states as $state)
     {
+        if ($state == 'Ringing') getCallerAndLookup($obihai_host, $obihai_user, $obihai_pass, $state);
       echo $state . PHP_EOL; // On Hook, Ringing, Off Hook
       echo '/state_line' . $i . PHP_EOL;
       // need to do something like call block when Ringing, and when Off Hook start recording, when On Hook, get last caller, etc
