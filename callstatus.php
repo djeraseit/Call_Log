@@ -44,7 +44,7 @@ $password = "admin";
 $url = "{$scheme}://{$host}/{$pagename}";
 
 try {
-  $raw_response  =  curl_get($url,$username = 'admin', $password = 'megalith');
+  $raw_response  =  curl_get($url,$username, $password);
 /*
   // validate CURL status
   if(curl_errno($ch))
@@ -63,7 +63,6 @@ try {
 */
     }
 
-//echo ($raw_response);
 $raw_response = file_get_contents('callstatus-example2.txt');
 
 $results = parseCurrentCaller($raw_response);

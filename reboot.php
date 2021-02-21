@@ -25,12 +25,23 @@
 * along with this program.  If not, see https://www.gnu.org/licenses/gpl-3.0.en.html.
 */
 
+$config = require __DIR__.'/config.php';
+require_once(__DIR__.'/functions.php');
 
+if (isset($config['obihai']['host'])) {
+   $host = $config['obihai']['host'];
+   $username = $config['obihai']['credentials']['username'];
+   $password = $config['obihai']['credentials']['password'];
+   $scheme = $config['obihai']['scheme'];
+ } else {
+ $host = '192.168.42.2';
+ $username = "admin";
+ $password = "admin";
+ $scheme = "http";
+ }
 
-$host = '192.168.1.1';   
-//$pagename = 'callstatus.htm';
 $pagename = 'rebootgetconfig.htm';
-$scheme = 'http';
+
 $url = "{$scheme}://{$host}/{$pagename}";
 $username = "admin";
 $password = "admin";
@@ -66,5 +77,4 @@ try {
      throw new Exception($ex);
 }
 
-echo ($raw_response);
-
+echo "Rebooting";
