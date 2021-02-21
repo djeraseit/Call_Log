@@ -292,3 +292,31 @@ $currentcall = array($callState,$callerName,$callerNumber,$callStart,$callDurati
 //echo $doc->saveHTML();
 return $currentcall;
 }
+
+function callHistoryJson($xmldata) {
+  $xml = simplexml_load_string($xmldata, "SimpleXMLElement", LIBXML_NOCDATA);
+  $json = json_encode($xml);
+  $array = json_decode($json,TRUE);
+
+  $callhistoryjson = [];
+
+  foreach ($array as $v => $call) {
+   // $keys = array_keys($call);
+   // $totalcalls = count($call);
+//  var_dump($totalcalls); // 200
+    foreach ($call as $caller){
+      //var_dump($caller);
+      //die();
+      $history['Name'] = $caller['Terminal'][0]['Peer']['@attributes']['name'];
+      $history['Number'] = $caller['Terminal'][0]['Peer']['@attributes']['number'];
+      $history['Direction'] = $caller['Terminal'][0]['@attributes']['dir'];
+      $history['Date'] = $caller['@attributes']['date'];
+      $history['Time'] = $caller['@attributes']['time'];
+      $history['Events'] = $caller['Terminal'][0]['Event']; // array
+      $callhistoryjson[] = $history;
+    }
+  }
+
+  return $callhistoryjson;
+}
+
