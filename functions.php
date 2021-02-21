@@ -47,11 +47,10 @@ function curl_post($Url,$username = 'admin', $password = 'admin',$payload = arra
     CURLOPT_TCP_KEEPALIVE => 1, // for callhistoryxml
     CURLOPT_TCP_KEEPIDLE => 2, // for call historyxml
 );
- // OK cool - then let's create a new cURL resource handle
+ 
  $ch = curl_init();
  curl_setopt_array( $ch, $options );
 
- // Download the given URL, and return output
  $output = curl_exec($ch);
 
  // Close the cURL resource, and free system resources
@@ -137,11 +136,6 @@ function pb_alert($pbtoken = 'o.mjCLA2hY2n5jVnwGwHrIDO76KccJtIbl',$payload = arr
  $ch = curl_init();
  curl_setopt_array( $ch, $options );
 
- //curl_setopt($ch, CURLOPT_PROXY, "proxy.YOURSITE.com");
- //curl_setopt($ch, CURLOPT_PROXYPORT, 8080);
- //curl_setopt ($ch, CURLOPT_PROXYUSERPWD, "username:password"); 
-
- // Download the given URL, and return output
  $output = curl_exec($ch);
 
  // Close the cURL resource, and free system resources
@@ -184,7 +178,6 @@ function youmailLookup($apikey = null,$apisid = null,$phonenum = '',$payload = a
 //curl_setopt($ch, CURLOPT_PROXYPORT, 8080);
 //curl_setopt ($ch, CURLOPT_PROXYUSERPWD, "username:password"); 
 
-// OK cool - then let's create a new cURL resource handle
 $ch = curl_init();
 curl_setopt_array( $ch, $options );
 
@@ -207,11 +200,6 @@ try {
 }
 
 if ($ch != null) curl_close($ch);
-
-
-
-// Close the cURL resource, and free system resources
-//curl_close($ch);
 
 return $output;
 
@@ -419,9 +407,53 @@ function updateRisk ($number, $data) {
   
     if (array_key_exists($number,$phonebook)) {
     $phonebook[$number]['spamRisk'] = $data['spamRisk']['level'];
-   // $phonebook[$number][] = array('spamRisk' => $data['spamRisk']['level']);
-  }
+    // $phonebook[$number][] = array('spamRisk' => $data['spamRisk']['level']);
+    }
   $phonebook = json_encode($phonebook);
   $updatedPhonebook = file_put_contents('phone_book.json',$phonebook);
   return $updatedPhonebook;
+}
+
+function addBlacklistName ($name) {
+  $blacklist = json_decode(file_get_contents('blacklist_names.json'), true);
+
+  if (!array_key_exists($name,$blacklist)) {
+  $blacklist[] = $name;
+ }
+$blacklist = json_encode($blacklist);
+$updatedBlacklist = file_put_contents('blacklist_names.json',$blacklist);
+return $updatedBlacklist;
+}
+
+function addBlacklistNumber ($number) {
+  $blacklist = json_decode(file_get_contents('blacklist_numbers.json'), true);
+
+  if (!array_key_exists($number,$blacklist)) {
+  $blacklist[] = $number;
+ }
+$blacklist = json_encode($blacklist);
+$updatedBlacklist = file_put_contents('blacklist_numbers.json',$blacklist);
+return $updatedBlacklist;
+}
+
+function addWhitelistName ($name) {
+  $whitelist = json_decode(file_get_contents('whitelist_names.json'), true);
+
+  if (!array_key_exists($name,$whitelist)) {
+  $whitelist[] = $name;
+ }
+$whitelist = json_encode($whitelist);
+$updatedWhitelist = file_put_contents('whitelist_names.json',$whitelist);
+return $updatedWhitelist;
+}
+
+function addWhitelistNumber ($number) {
+  $whitelist = json_decode(file_get_contents('whitelist_numbers.json'), true);
+
+  if (!array_key_exists($number,$whitelist)) {
+  $whitelist[] = $number;
+ }
+$blacklist = json_encode($whitelist);
+$updatedWhitelist = file_put_contents('whitelist_numbers.json',$whitelist);
+return $updatedWhitelist;
 }
