@@ -457,3 +457,34 @@ $blacklist = json_encode($whitelist);
 $updatedWhitelist = file_put_contents('whitelist_numbers.json',$whitelist);
 return $updatedWhitelist;
 }
+
+function numverify($accessKey,$phoneNumber = '15555555555') {
+
+$ch = curl_init('http://apilayer.net/api/validate?access_key='.$accessKey.'&number='.$phoneNumber.'&country_code='.'&format=1');  
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+// Store the data:
+$json = curl_exec($ch);
+curl_close($ch);
+
+// Decode JSON response:
+$validationResult = json_decode($json, true);
+
+// Access and use your preferred validation result objects
+$validationResult['valid'];
+$validationResult['country_code'];
+$validationResult['carrier'];
+$validationResult['number']; 
+$validationResult['local_format']; 
+$validationResult['international_format']; 
+$validationResult['country_prefix'];    
+$validationResult['country_code'];    
+$validationResult['country_name'];
+$validationResult['location'];         
+$validationResult['line_type'];          
+
+return($validationResult);
+   // & country_code = default blank
+   // & format = 1
+
+}
