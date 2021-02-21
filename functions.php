@@ -517,9 +517,9 @@ function twilioNomorobo($sid, $authToken, $callee = '+17136331642', $phonenumber
     CURLOPT_TIMEOUT => 5,
     CURLOPT_CONNECTTIMEOUT => 5,
     CURLOPT_USERPWD => $authorization,
-    CURLOPT_REFERER => 'https://www.theodis.com'
+    CURLOPT_REFERER => 'https://www.theodis.com',
+    CURLOPT_HTTPAUTH => CURLAUTH_BASIC
 );
- // uses basic authentication
 
  $ch = curl_init();
  curl_setopt_array( $ch, $options );

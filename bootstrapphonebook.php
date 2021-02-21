@@ -71,7 +71,11 @@ foreach ($phonebook as $phonenumber => $contact) {
     if (isset($response['timestamp'])) $timestamp = $response['timestamp'];
     
    // update risk
+   try {
    updateRisk($phonenumber,json_encode($response));
+    } catch(Exception $e) {
+        echo $e->getMessage();
+    }
    // var_dump($response);
     } else {
         die('Something bad happened.');

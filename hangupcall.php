@@ -72,6 +72,7 @@ try {
     if ($raw_response === null) echo('No response');
      throw new Exception($ex);
 */
+echo $ex->getMessage();
     }
 
 //echo ($raw_response);
