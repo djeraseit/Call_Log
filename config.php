@@ -62,6 +62,7 @@ return [
             'sid' => 'c54d3629988a46019dc5a863ce81d55a',
         ],
         'phone' => '7136331642', // use nvram
+        'credits' => '1000'
     ],
     'obihai' => [
         'credentials' => [
@@ -70,6 +71,11 @@ return [
         ],
         'host' => '192.168.42.2',
         'scheme' => 'http'
+    ],
+    'general' => [
+        'phone' => '7136331642',
+        'phonebook' => 'phone_book.json',
+        'phonehistory' => 'phone_history.json'
     ]
 ];
 /*

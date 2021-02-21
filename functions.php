@@ -157,6 +157,7 @@ function youmailLookup($apikey = 'o.mjCLA2hY2n5jVnwGwHrIDO76KccJtIbl',$apisid = 
 
   }  
   $callerinfo = [];
+  if (empty($payload['callee'])) throw new Exception("Phone number missing!"); // throw new exception
   $callerinfo = $payload['callee'];
   $callerinfo = urlencode($payload['callerId']);
   
@@ -195,7 +196,39 @@ return $output;
 
 }
 
-function getCallerAndLookup() {}
+function addPhonebook ($entry = array()) {
+  if (!empty($entry)) {
+    $phonebook = json_decode(file_get_contents('phone_book.json'), true);
+    $phonebook[$phonenumber]['Name'] = $entry['fullname'];
+    $phonebook[$phonenumber]['LastCall'] = $entry['lastcalldatetime'];
+    
+    file_put_contents(json_encode('phone_book.json'));
+    }
+    return true;
+}
+
+function checkPhonebook($phonenumber) {
+  if (!empty($phonenumber)) {
+    $phonebook = json_decode(file_get_contents('phone_book.json'), true);
+    if (array_key_exists($phonenumber, $phonebook)) {
+    $fullname = $phonebook[$phonenumber]['Name'];
+    $lastcalldatetime = $phonebook[$phonenumber]['LastCall'];
+    } else {
+      $contact = null;
+    }
+    $contact = array($fullname,$lastcalldatetime);
+  }
+    return $contact;
+}
+
+function getCallerAndLookup($host, $username, $password, $state = "Ringing") {
+  if ($state == "Ringing") {
+
+  } elseif ($state =="Off Hook") {
+
+  }
+
+}
 
 function getCallerAndHangup($scheme, $host, $username, $password) {
 
@@ -265,7 +298,7 @@ do {
 
 function parseCurrentCaller($html) {
 
-  $doc = new DOMDocument();
+$doc = new DOMDocument();
 libxml_use_internal_errors(true);
 $doc->validateOnParse = true;
 
@@ -297,7 +330,11 @@ foreach($calltable->getElementsByTagName('tr') as $tr)
     $tds = $tr->getElementsByTagName('td'); // get the columns in this row
     if($tds->length >= 2 && !(empty($tds->item(1))))
     {
-        $callinfo = $tds->item(1)->nodeValue;
+      $calltimes = $tds->item(0)->nodeValue; // possibly for start and end call times
+      //var_dump($calltimes);
+      //die();
+      
+      $callinfo = $tds->item(1)->nodeValue;
         if (!empty($callinfo)) $call[] = $callinfo; // B            
     }
 }
@@ -331,24 +368,33 @@ function callHistoryJson($xmldata) {
   $json = json_encode($xml);
   $array = json_decode($json,TRUE);
 
-  $callhistoryjson = [];
+  //$callhistoryjson = [];
 
   foreach ($array as $v => $call) {
-    var_dump($call);
-      die();
+    //var_dump($call);
+     // die();
     foreach ($call as $caller){
       
-      $history['Name'] = $caller['Terminal'][0]['Peer']['@attributes']['name'];
-      $history['Number'] = $caller['Terminal'][0]['Peer']['@attributes']['number'];
-      $history['Direction'] = $caller['Terminal'][0]['@attributes']['dir'];
-      $history['Date'] = $caller['@attributes']['date'];
-      $history['Time'] = $caller['@attributes']['time'];
-      $history['Events'] = $caller['Terminal'][0]['Event']; // array
-      $callhistoryjson[] = $history;
+     // $history['Name'] = $caller['Terminal'][0]['Peer']['@attributes']['name'];
+     // $history['Number'] = $caller['Terminal'][0]['Peer']['@attributes']['number'];
+     // $history['Direction'] = $caller['Terminal'][0]['@attributes']['dir'];
+     // $history['Date'] = $caller['@attributes']['date'];
+     // $history['Time'] = $caller['@attributes']['time'];
+    // $history['Events'] = $caller['Terminal'][0]['Event']; // array
+     // $callhistoryjson[] = $history;
+     $historyname= $caller['Terminal'][0]['Peer']['@attributes']['name'];
+     $historynumber = $caller['Terminal'][0]['Peer']['@attributes']['number'];
+     $historydirection = $caller['Terminal'][0]['@attributes']['dir'];
+     $historydate = $caller['@attributes']['date'];
+     $historytime = $caller['@attributes']['time'];
+     $historyevents = $caller['Terminal'][0]['Event']; // array
+     // $callhistoryjson[] = $history;
+     $callhistoryjson[] = ["Name"=> $historyname,"Number"=> $historynumber, "Direction"=> $historydirection,
+                        "Date"=> $historydate,"Time" => $historytime, "Events" => $historyevents];
     }
   }
 
-  return $callhistoryjson;
+  return json_encode($callhistoryjson);
 }
 
 function openCNAM ($number) {

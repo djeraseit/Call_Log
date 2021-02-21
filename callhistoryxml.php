@@ -85,4 +85,5 @@ try {
      throw new Exception($ex);
 }
 
-print_r(callHistoryJson($raw_response));
+$jsonresponse = callHistoryJson($raw_response);
+file_put_contents('phone_history.json',$jsonresponse);
