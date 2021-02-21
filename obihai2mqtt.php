@@ -64,7 +64,7 @@ $tidy = new Tidy();
 $xml = $tidy->repairfile($badXML, $config);
 echo $xml;
 */
-
+//$searchPage = mb_convert_encoding($htmlUTF8Page, 'HTML-ENTITIES', "UTF-8"); 
 while (true)
 {
   $states = array();
