@@ -72,6 +72,9 @@ return [
         'host' => '192.168.42.2',
         'scheme' => 'http'
     ],
+    'numverify' => [
+        'accessKey' => 'xxx',
+    ],
     'general' => [
         'phone' => '7136331642',
         'phonebook' => 'phone_book.json',
