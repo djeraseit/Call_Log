@@ -36,24 +36,14 @@ if (isset($config['obihai']['host'])) {
   $password = $config['obihai']['credentials']['password'];
   $scheme = $config['obihai']['scheme'];
 } else {
-$host = '192.168.42.2';
-$username = "admin";
-$password = "admin";
+  die('Please configure the software.');
 }
 
 $url = "{$scheme}://{$host}/{$pagename}";
 
 try {
   $raw_response  =  curl_get($url,$username, $password);
-/*
-  // validate CURL status
-  if(curl_errno($ch))
-     throw new Exception(curl_error($ch), 500);
-  // validate HTTP status code (user/password credential issues)
-  $status_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-  if ($status_code != 200)
-      throw new Exception("Response with Status Code [" . $status_code . "].", 500);
-*/
+
     }
 
  catch(Exception $ex) {
@@ -66,3 +56,5 @@ try {
 $raw_response = file_get_contents('callstatus-example2.txt');
 
 $results = parseCurrentCaller($raw_response);
+
+var_dump($results);

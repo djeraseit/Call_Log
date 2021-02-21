@@ -53,16 +53,13 @@ function curl_post($Url,$username = 'admin', $password = 'admin',$payload = arra
 
  $output = curl_exec($ch);
 
- // Close the cURL resource, and free system resources
- curl_close($ch);
+ if ($ch != null) curl_close($ch);
 
  return $output;
 }
 
 function curl_get($Url,$username = 'admin', $password = 'admin'){
  
-
-  // Now set some options (most are optional)
   $options = array(
     CURLOPT_URL            => $Url,
     CURLOPT_HEADER         => false,    
@@ -88,10 +85,16 @@ function curl_get($Url,$username = 'admin', $password = 'admin'){
  //curl_setopt($ch, CURLOPT_PROXYPORT, 8080);
  //curl_setopt ($ch, CURLOPT_PROXYUSERPWD, "username:password"); 
 
- // Download the given URL, and return output
+  // validate CURL status
+  if(curl_errno($ch))
+     throw new Exception(curl_error($ch), 500);
+  // validate HTTP status code (user/password credential issues)
+  $status_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+  if ($status_code != 200)
+      throw new Exception("Response with Status Code [" . $status_code . "].", 500);
+
  $output = curl_exec($ch);
 
- // Close the cURL resource, and free system resources
  curl_close($ch);
 
  return $output;
@@ -132,14 +135,22 @@ function pb_alert($pbtoken = null,$payload = array()) {
     CURLOPT_CONNECTTIMEOUT => 5,
     CURLOPT_REFERER => 'https://www.theodis.com'
 );
- // OK cool - then let's create a new cURL resource handle
+
  $ch = curl_init();
  curl_setopt_array( $ch, $options );
 
+  // validate CURL status
+  if(curl_errno($ch))
+     throw new Exception(curl_error($ch), 500);
+  // validate HTTP status code (user/password credential issues)
+  $status_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+  if ($status_code != 200)
+      throw new Exception("Response with Status Code [" . $status_code . "].", 500);
+
  $output = curl_exec($ch);
 
- // Close the cURL resource, and free system resources
- curl_close($ch);
+ if ($ch != null) curl_close($ch);
+
  return $output;
 
 }
@@ -151,7 +162,6 @@ function youmailLookup($apikey = null,$apisid = null,$phonenum = '',$payload = a
     $callerinfo['callee'] = $payload['callee'];
     $callerinfo['callerId'] = $payload['callerId'];
   } 
-  
   
   //$callerinfo = [];
   if (empty($payload['callee'])) throw new Exception("Phone number missing!"); // throw new exception
@@ -299,7 +309,7 @@ do {
   curl_multi_remove_handle($mh, $c);
   }
 
-  curl_multi_close($mh);
+  if ($mh != null) curl_multi_close($mh);
 
   return $content;
   
