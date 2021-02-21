@@ -155,14 +155,18 @@ function youmailLookup($apikey = 'o.mjCLA2hY2n5jVnwGwHrIDO76KccJtIbl',$apisid = 
   if (empty($payload)) {
   $payload = array('callee'=>'7136331642','callerId'=>'Theodis Butler');
 
-  }  
-  $callerinfo = [];
-  if (empty($payload['callee'])) throw new Exception("Phone number missing!"); // throw new exception
-  $callerinfo = $payload['callee'];
-  $callerinfo = urlencode($payload['callerId']);
+  } 
   
-  $data = http_build_query($callerinfo) . "&"; 
-  $url = "https://dataapi.youmail.com/api/v2/{$phone}?" . $data;
+  //$callerinfo = [];
+  if (empty($payload['callee'])) throw new Exception("Phone number missing!"); // throw new exception
+  
+  $callerinfo['callee'] = $payload['callee'];
+  $callerinfo['callerId'] = $payload['callerId'];
+  
+  $phonenum = $callerinfo['callee'];
+
+  $data = http_build_query($callerinfo); 
+  $url = "https://dataapi.youmail.com/api/v2/phone/{$phonenum}?" . $data;
   
   $options = array(
   CURLOPT_URL            => $url,
@@ -173,7 +177,7 @@ function youmailLookup($apikey = 'o.mjCLA2hY2n5jVnwGwHrIDO76KccJtIbl',$apisid = 
   CURLOPT_USERAGENT => 'CallBlocker',
   CURLOPT_FOLLOWLOCATION => true,
   //CURLOPT_NOPROXY => '*', // do not use proxy
-  CURLOPT_SSL_VERIFYPEER => false,    // for https
+  CURLOPT_SSL_VERIFYPEER => true,    // for https
   CURLOPT_TIMEOUT => 5,
   CURLOPT_CONNECTTIMEOUT => 5,
   CURLOPT_REFERER => 'https://www.theodis.com'
@@ -182,12 +186,33 @@ function youmailLookup($apikey = 'o.mjCLA2hY2n5jVnwGwHrIDO76KccJtIbl',$apisid = 
 $ch = curl_init();
 curl_setopt_array( $ch, $options );
 
+// need to catch error code 401 which is bad username and/or password
+try {
+  $output  = curl_exec( $ch );
+
+  // validate CURL status
+  if(curl_errno($ch))
+      throw new Exception(curl_error($ch), 500);
+
+  // validate HTTP status code (user/password credential issues)
+  $status_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+  if ($status_code != 200)
+      throw new Exception("URL: {$url} Response with Status Code [" . $status_code . "].", 500);
+
+} catch(Exception $ex) {
+    if ($ch != null) curl_close($ch);
+    throw new Exception($ex);
+}
+
+if ($ch != null) curl_close($ch);
+
+
 //curl_setopt($ch, CURLOPT_PROXY, "proxy.YOURSITE.com");
 //curl_setopt($ch, CURLOPT_PROXYPORT, 8080);
 //curl_setopt ($ch, CURLOPT_PROXYUSERPWD, "username:password"); 
 
 // Download the given URL, and return output
-$output = curl_exec($ch);
+
 
 // Close the cURL resource, and free system resources
 curl_close($ch);

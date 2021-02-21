@@ -29,7 +29,19 @@
 $phonehistory = json_decode(file_get_contents('phone_history.json'), true);
 
 foreach ($phonehistory as $contact) {
-    $fullname = $contact['Name'];
-    $phonenumber = $contact['Number'];
-    $callhistory = $contact['CallHistory'];
+    
+    //$callhistory = $contact['CallHistory'];
+   
+    if (!empty($contact['Number'])) {
+        $phonenumber = $contact['Number'];
+        //$entry[$phonenumber] = array('Name' => $fullname,'Number'=> $phonenumber);
+    
+    }
+    if (!empty($contact['Name'])) {
+        $fullname = $contact['Name'];        
+    }
+    if (!empty($phonenumber) && !empty($fullname)) $entry[$phonenumber] = array('Name' => $fullname);
 }
+var_dump($entry);
+$output = json_encode($entry);
+file_put_contents('phone_book.json',$output);

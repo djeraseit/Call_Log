@@ -75,7 +75,8 @@ return [
     'general' => [
         'phone' => '7136331642',
         'phonebook' => 'phone_book.json',
-        'phonehistory' => 'phone_history.json'
+        'phonehistory' => 'phone_history.json',
+        'licensecode' => 'demo'
     ]
 ];
 /*

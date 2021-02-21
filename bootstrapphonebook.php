@@ -36,7 +36,7 @@ if (isset($config['youmail']['credentials']['key'])) {
  die('No call checker service configured.');
 }
 
-$phonehistory = json_decode(file_get_contents('phone_history.json'), true);
+$phonebook = json_decode(file_get_contents('phone_book.json'), true);
 
 /*
 if (!empty($entry)) {
@@ -49,23 +49,29 @@ if (!empty($entry)) {
     }
 */
 
-foreach ($phonehistory as $entry) {
-    
+foreach ($phonebook as $phonenumber => $contact) {
+    $payload = array('callee'=>$phone, 'callerId'=> $contact['Name']); 
     try {
-    //$lookupdetails = youmailLookup($youmailKey,$youmailSid,$phone,$entry); 
+        $lookupdetails = youmailLookup($youmailKey,$youmailSid,$phonenumber,$payload); 
     } catch(Exception $e){
         echo 'Error: ' . $e->getMessage();
     }
-    /*
+    
+    if (!empty($lookupdetails)) {
     $response = json_decode($lookupdetails,true);
 
     $statusCode = $response['statusCode'];
     $recordFound = $response['recordFound'];
     $phoneNumber = $response['phoneNumber'];
     $spamRiskLevel = $response['spamRisk']['level'];
-    $spamRiskReason = $response['spamRisk']['reasonLabel'];
-    $spamRiskCode = $response['spamRisk']['reasonCode'];
-    $spamRiskMessage = $response['spamRisk']['reasonMessage'];
-    $timestamp = $response['timestamp'];
-    */
+    if (isset($response['spamRisk']['reasonLabel'])) $spamRiskReason = $response['spamRisk']['reasonLabel'];
+    if (isset($response['spamRisk']['reasonCode'])) $spamRiskCode = $response['spamRisk']['reasonCode'];
+    if (isset($response['spamRisk']['reasonMessage'])) $response['spamRisk']['reasonMessage'];
+    if (isset($response['timestamp'])) $timestamp = $response['timestamp'];
+    
+   
+    var_dump($response);
+    } else {
+        die('Something bad happened.');
+    }
 }
