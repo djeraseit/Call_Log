@@ -26,7 +26,7 @@
 */
 
 require_once(__DIR__.'/config.php');
-require_once(__DIR__.'/simple_html_dom.php');
+
 $opencnam = 'https://api.opencnam.com/v2/phone/+155555555';
 $host = 'obi110'; //hostname or IP
 $pagename = 'callhistory.htm';
