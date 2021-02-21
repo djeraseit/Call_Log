@@ -255,12 +255,30 @@ function checkPhonebook($phonenumber) {
 function getCallerAndLookup($host, $username, $password, $state = "Ringing") {
   if ($state == "Ringing") {
 
-  } elseif ($state =="Off Hook") {
+    try {
+      $currentcaller = getCurrentCaller();
+      } catch (Exception $e) {
+      echo $e-getMessage();
+      }
 
+      $callerinfo = json_decode($currentcaller,true);
+
+      if (isset($callerinfo['Item'])) {
+        $item = $callerinfo['Item'];
+        //$hangupstatus = hangup($item);// hangup caller function
+        $fullname = $callerinfo['Name'];
+        $phonenumber = $callerinfo['Number'];
+      } else { 
+      echo "No current callers.";
+      }
+
+  } elseif ($state == "Off Hook") {
+    // TODO: Check if on a call or just dialing a number (look for Connected)
   }
-
+  return json_encode($callerinfo);
 }
 
+// TODO: Change this function to something else due to Item requirements
 function getCallerAndHangup($scheme, $host, $username, $password) {
 
   // array of curl handles
@@ -565,8 +583,6 @@ function twilioNomorobo($sid, $authToken, $callee = '+17136331642', $phonenumber
 function hangup($item ='0x45cbf0') {
   $config = require __DIR__.'/config.php';
 
-// return config.php (using file_get_contents or $config)
-
 if (isset($config['obihai']['host'])) {
   $host = $config['obihai']['host'];
   $username = $config['obihai']['credentials']['username'];
@@ -582,6 +598,7 @@ $pagename = 'callstatus.htm?item=' . $item;
 $scheme = "http";
 
 $url = "{$scheme}://{$host}/{$pagename}";
+$raw_response = 'Error';
 
 try {
   $raw_response  =  curl_post($url,$username,$password,$payload);

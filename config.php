@@ -41,10 +41,10 @@ return [
     'twilio' => [
         'credentials' => [
             'phone' => '+17132579496',
-            'accountid' => 'YOUR_SANDBOX_APPID_APPLICATION_KEY',
+            'accountid' => '',
         ],
         'sid' => 'AC8bc5ced8f2c87c57ba2313501fb82b52', // use nvram
-        'token' => getenv("TWILIO_AUTH_TOKEN") // use nvram
+        'token' => 'cfe277e84656b6aee186301b062cfd03' // getenv("TWILIO_AUTH_TOKEN") or use nvram
     ],
     'cloudamqp' => [
         'credentials' => [

@@ -28,37 +28,17 @@
 $config = require __DIR__.'/config.php';
 require_once(__DIR__.'/functions.php');
 
-// return config.php (using file_get_contents or $config)
-
-if (isset($config['obihai']['host'])) {
-  $host = $config['obihai']['host'];
-  $username = $config['obihai']['credentials']['username'];
-  $password = $config['obihai']['credentials']['password'];
-  $scheme = $config['obihai']['scheme'];
-} else {
-$host = '192.168.42.2';
-$username = "admin";
-$password = "admin";
-$scheme = "http";
-}
-
-if (isset($GET['item'])) {
-$item = $_GET['item'];
-} else {
-  $item = "0x45cbf0";
-}
-$value = "Remove";
-$payload = array("item"=>$item,'value'=>$value);
-$pagename = 'callstatus.htm?item=' . $item;
-$scheme = "http";
-
-$url = "{$scheme}://{$host}/{$pagename}";
-
 try {
-  $raw_response  =  curl_post($url,$username,$password,$payload);
-}
- catch(Exception $ex) {
-    echo $ex->getMessage();
-}
+  $currentcaller = getCurrentCaller();
+  } catch (Exception $e) {
+  echo $e-getMessage();
+  }
 
-//echo ($raw_response);
+  $callerinfo = json_decode($currentcaller,true);
+
+  if (isset($callerinfo['Item'])) {
+   $item = $callerinfo['Item'];
+    $hangupstatus = hangup($item);// hangup caller function
+  } else { 
+    echo "No current callers.";
+  }
