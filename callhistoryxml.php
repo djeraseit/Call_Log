@@ -86,4 +86,4 @@ try {
 }
 
 $jsonresponse = callHistoryJson($raw_response);
-file_put_contents('phone_history.json',$jsonresponse);
+file_put_contents('phone_history.json',$jsonresponse, LOCK_EX); //append?

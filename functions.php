@@ -227,7 +227,7 @@ function addPhonebook ($entry = array()) {
     $phonebook[$phonenumber]['Name'] = $entry['fullname'];
     $phonebook[$phonenumber]['LastCall'] = $entry['lastcalldatetime'];
     
-    file_put_contents(json_encode('phone_book.json'));
+    file_put_contents('phone_book.json',json_encode($phonebook), LOCK_EX); // append?
     }
     return true;
 }

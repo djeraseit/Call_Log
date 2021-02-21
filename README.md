@@ -34,3 +34,5 @@ But if it’s a robocall, we answer the call immediately. To prevent false posit
 10. Database connectivity
 11. Redis queue/memcache functionality
 12. Twilio integration
+13. Look into append mode for file_put_contents
+14. Queue spam lookup for new calls
