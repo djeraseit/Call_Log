@@ -16,29 +16,22 @@ $password = "admin";
 $scheme = $config['scheme'];
 }
 
+if (isset($GET['item'])) {
 $item = $_GET['item'];
+} else {
+  $item = "0x45cbf0";
+}
 $value = "Remove";
 $payload = array("item"=>$item,'value'=>$value);
 $pagename = 'callstatus.htm?' . $item;
 $scheme = "http";
 $url = "{$scheme}://{$host}/{$pagename}";
-curl_post($url,$username,$password,$payload);
 
-
-if (isset($config['obihost'])) {
-    $host = $config['obihost'];
-    $username = $config['obiusername'];
-    $password = $config['obipassword'];
-  } else {
-  $host = '192.168.42.2';
-  $username = "admin";
-  $password = "admin";
-  }
 
 $url = "{$scheme}://{$host}/{$pagename}";
 
 try {
-  $raw_response  =  curl_get($url,$username = 'admin', $password = 'megalith');
+  $raw_response  =  curl_post($url,$username,$password,$payload);
 /*
   // validate CURL status
   if(curl_errno($ch))
@@ -58,8 +51,3 @@ try {
     }
 
 echo ($raw_response);
-
-}
-<form action="./callstatus.htm?item=0x45cbf0" method="post">
-<input class="buttoninput" type="submit" value="Remove">
-<input class="buttoninput" type="button" value="Record" onclick="click_record()"></form>
