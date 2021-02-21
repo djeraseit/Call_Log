@@ -27,7 +27,7 @@
 
 $config = require __DIR__.'/config.php';
 require_once(__DIR__.'/functions.php');
-
+/*
 $pagename = 'callstatus.htm';
 
 if (isset($config['obihai']['host'])) {
@@ -58,3 +58,5 @@ $results = parseCurrentCaller($raw_response);
 
 var_dump($results);
   }
+  */
+  print_r(getCurrentCaller());

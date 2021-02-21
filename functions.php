@@ -339,23 +339,21 @@ $doc->preserveWhiteSpace = false;
 
 $activetable = $doc->getElementsByTagName('table')->item(0);
 
-
 foreach($activetable->getElementsByTagName('tr') as $tractive) {
 $tdactive = $tractive->getElementsByTagName('td');
 $activecallfield = $tdactive->item(0)->nodeValue;
-preg_match_all('!\d+!', $activecallfield, $matches);
-$totalactivecalls = (int) $matches;
+$totalactivecalls = (int) filter_var($activecallfield, FILTER_SANITIZE_NUMBER_INT);
 }
 
+$currentcall = [];
 $call = [];
-//$rows = $tables->item(1)->getElementsByTagName('tr');
-$calltable = $doc->getElementsByTagName('table')->item(1);
-//echo $activetable->getElementsByTagName('tr') ;
 
+$calltable = $doc->getElementsByTagName('table')->item(1);
+
+if ( $totalactivecalls >= 1 ){
 $callremove = $doc->getElementsByTagName('form')->item(0)->getAttribute('action');
 $formarray = explode("=",$callremove);
 $callItem = $formarray[1];
-
 
 // iterate over each row in the table
 foreach($calltable->getElementsByTagName('tr') as $tr)
@@ -364,15 +362,11 @@ foreach($calltable->getElementsByTagName('tr') as $tr)
     if($tds->length >= 2 && !(empty($tds->item(1))))
     {
       $calltimes = $tds->item(0)->nodeValue; // possibly for start and end call times
-      //var_dump($calltimes);
-      //die();
-      
       $callinfo = $tds->item(1)->nodeValue;
         if (!empty($callinfo)) $call[] = $callinfo; // B            
     }
 }
 // Future parse multiple calls (i.e. second table) if active calls >=1
-//var_dump($call);
 
 // 0 - Call 1
 // 1 - Terminal ID
@@ -394,7 +388,8 @@ $callDirection = $call[7];
 
 $currentcall = array('State'=>$callState,'Name'=>$callerName,'Number'=>$callerNumber,'StartTime'=>$callStart,'Duration'=>$callDuration,
 'Direction'=>$callDirection, 'Item'=>$callItem,'ActiveCalls'=> $totalactivecalls);
-//echo $doc->saveHTML();
+} //end if statement
+
 return json_encode($currentcall);
 }
 
