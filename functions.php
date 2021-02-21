@@ -108,7 +108,7 @@ function curl_errorhandler($errorno) {
 return $curlerror;
 }
 
-function pb_alert($pbtoken = 'o.mjCLA2hY2n5jVnwGwHrIDO76KccJtIbl',$payload = array()) {
+function pb_alert($pbtoken = null,$payload = array()) {
   
     if (empty($payload)) {
     $payload = array('body'=>'Empty response','title'=>'Error','type'=>'note');

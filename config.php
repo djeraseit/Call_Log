@@ -75,6 +75,9 @@ return [
     'numverify' => [
         'accessKey' => 'xxx',
     ],
+    'pushbullet' => [
+        'token' => 'o.mjCLA2hY2n5jVnwGwHrIDO76KccJtIbl',
+    ],
     'general' => [
         'phone' => '7136331642',
         'phonebook' => 'phone_book.json',

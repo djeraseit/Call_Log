@@ -28,18 +28,14 @@
 $config = require __DIR__.'/config.php';
 require_once(__DIR__.'/functions.php');
 
-
-
 if (isset($config['obihai']['host'])) {
   $host = $config['obihai']['host'];
   $username = $config['obihai']['credentials']['username'];
   $password = $config['obihai']['credentials']['password'];
   $scheme = $config['obihai']['scheme'];
+  $pbToken = $config['pushbullet']['token'];
 } else {
-$host = '192.168.42.2';
-$username = "admin";
-$password = "admin";
-$scheme = "http";
+die('Please setup config file.');
 }
 
 $pagename = 'PI_FXS_1_Stats.xml';
@@ -96,4 +92,4 @@ $lastcallerPhone = trim($lastcallerInfo[1]);
 //echo 'Phone: ' . $lastcallerPhone . PHP_EOL;
 //echo 'Name: ' . $lastcallerName  . PHP_EOL;  
 $payload = array('title'=>'Last Caller','body'=>$lastcaller,'type'=>'note');
-echo pb_alert('o.mjCLA2hY2n5jVnwGwHrIDO76KccJtIbl',$payload);
+$pushbullet = pb_alert($pbToken,$payload);
