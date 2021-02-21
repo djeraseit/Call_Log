@@ -498,3 +498,47 @@ return($validationResult);
    // & format = 1
 
 }
+
+function twilioNomorobo($sid, $authToken, $callee = '+17136331642', $phonenumber){
+  $authorization = $sid . ":" . $authToken;
+  $addOns = array('AddOns'=>'nomorobo_spamscore','AddOns.nomorobo_spamscore.secondary_address'=>$callee);
+  $phonenumber = "+1" . $phonenumber; // optional country code -- defaults to US
+  
+  $url = "https://lookups.twilio.com/v1/PhoneNumbers/{$phonenumber}/?AddOns=nomorobo_spamscore&AddOns.nomorobo_spamscore.secondary_address={$callee}";
+  $options = array(
+    CURLOPT_URL            => $url,
+    CURLOPT_HEADER         => false,    
+    CURLOPT_VERBOSE        => false,
+    CURLOPT_RETURNTRANSFER => true,
+    CURLOPT_USERAGENT => 'CallBlocker',
+    CURLOPT_FOLLOWLOCATION => true,
+    //CURLOPT_NOPROXY => '*', // do not use proxy
+    CURLOPT_SSL_VERIFYPEER => true,    // for https
+    CURLOPT_TIMEOUT => 5,
+    CURLOPT_CONNECTTIMEOUT => 5,
+    CURLOPT_USERPWD => $authorization,
+    CURLOPT_REFERER => 'https://www.theodis.com'
+);
+ // uses basic authentication
+
+ $ch = curl_init();
+ curl_setopt_array( $ch, $options );
+
+ //curl_setopt($ch, CURLOPT_PROXY, "proxy.YOURSITE.com");
+ //curl_setopt($ch, CURLOPT_PROXYPORT, 8080);
+ //curl_setopt ($ch, CURLOPT_PROXYUSERPWD, "username:password"); 
+
+  // validate CURL status
+  if(curl_errno($ch))
+     throw new Exception(curl_error($ch), 500);
+  // validate HTTP status code (user/password credential issues)
+  $status_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+  if ($status_code != 200)
+      throw new Exception("Response with Status Code [" . $status_code . "].", 500);
+
+ $output = curl_exec($ch);
+
+ curl_close($ch);
+
+ return $output;
+}

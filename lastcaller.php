@@ -35,7 +35,7 @@ if (isset($config['obihai']['host'])) {
   $scheme = $config['obihai']['scheme'];
   $pbToken = $config['pushbullet']['token'];
 } else {
-die('Please setup config file.');
+          die('Please setup config file.');
 }
 
 $pagename = 'PI_FXS_1_Stats.xml';
@@ -81,15 +81,19 @@ if ($ch != null) curl_close($ch);
         $states[] = $parameter->value['current'];
         // inside loop so prints twice
         //print_r(current($states[0]));
-$lastcaller = current($states[0]);
-$lastcallerInfo = explode("' ",$lastcaller);
-$lastcallerName = trim($lastcallerInfo[0],"'");
-$lastcallerPhone = trim($lastcallerInfo[1]);
-
-    }
+        $lastcaller = current($states[0]);
+        $lastcallerInfo = explode("' ",$lastcaller);
+        $lastcallerName = trim($lastcallerInfo[0],"'");
+        $lastcallerPhone = trim($lastcallerInfo[1]);
+      }
     }
   }
 //echo 'Phone: ' . $lastcallerPhone . PHP_EOL;
 //echo 'Name: ' . $lastcallerName  . PHP_EOL;  
 $payload = array('title'=>'Last Caller','body'=>$lastcaller,'type'=>'note');
+
+try {
 $pushbullet = pb_alert($pbToken,$payload);
+} catch (Exception $e) {
+  echo $e->getMessage();
+}

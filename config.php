@@ -40,10 +40,10 @@ date_default_timezone_set('America/Chicago');
 return [
     'twilio' => [
         'credentials' => [
-            'phone' => 'YOUR_SANDBOX_DEVID_APPLICATION_KEY',
+            'phone' => '+17132579496',
             'accountid' => 'YOUR_SANDBOX_APPID_APPLICATION_KEY',
         ],
-        'sid' => getenv("TWILIO_ACCOUNT_SID"), // use nvram
+        'sid' => 'AC8bc5ced8f2c87c57ba2313501fb82b52', // use nvram
         'token' => getenv("TWILIO_AUTH_TOKEN") // use nvram
     ],
     'cloudamqp' => [
@@ -51,10 +51,11 @@ return [
             'username' => 'rcndzvbo:rcndzvbo',
             'password' => 'E-BaZornNc1uuSID1kjuVmzDsj1UrxVY',
         ],
-        'host' => "eagle.rmq.cloudamqp.com", // use nvram
+        'host' => "eagle.rmq.cloudamqp.com", // use nvram or eagle-01.rmq.cloudamqp.com (not loadbalanced)
         'port' => "1883", // 8883 for TLS 
         'topic' => "obihai",
-        'vhost' => "rcndzvbo"
+        'vhost' => "rcndzvbo",
+        'amqpurl' => 'amqps://rcndzvbo:E-BaZornNc1uuSID1kjuVmzDsj1UrxVY@eagle.rmq.cloudamqp.com/rcndzvbo'
     ],
     'youmail' => [
         'credentials' => [
@@ -85,23 +86,3 @@ return [
         'licensecode' => 'demo'
     ]
 ];
-/*
-$config = [];
-$config['numverifykey'] = 'xxx';
-$config['scheme'] = 'http';
-$config['amqpurl'] = 'amqps://rcndzvbo:E-BaZornNc1uuSID1kjuVmzDsj1UrxVY@eagle.rmq.cloudamqp.com/rcndzvbo';
-$config['twiliosid'] = getenv("TWILIO_ACCOUNT_SID"); // use nvram
-$config['twiliotoken'] = getenv("TWILIO_AUTH_TOKEN"); // use nvram
-$config['obiusername'] = "admin";
-$config['obipassword'] = "megalith";
-$config['obihost'] = "192.168.42.2";
-$config['pbtoken'] = 'o.mjCLA2hY2n5jVnwGwHrIDO76KccJtIbl';
-$config['cloudamqphost'] = "eagle.rmq.cloudamqp.com"; // or eagle-01.rmq.cloudamqp.com (not loadbalanced)
-$config['cloudamqpport'] = "1883"; // 8883 for TLS (mqtt) 1883 for normal
-$config['cloudamqpvhost'] = "rcndzvbo"; 
-$config['cloudamqpuser'] = "rcndzvbo:rcndzvbo"; // (mqtt) 
-$config['cloudamqppass'] = "E-BaZornNc1uuSID1kjuVmzDsj1UrxVY";
-$config['cloudamqptopic'] = "obihai"; 
-$config['youmailkey'] = "6946b98eb76a1781eb15ae89df024fce9d859a8167e7012b60fd89779627521fef4eea4cceb51f73";
-$config['youmailsid'] = "c54d3629988a46019dc5a863ce81d55a";
-*/
