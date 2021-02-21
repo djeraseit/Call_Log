@@ -27,36 +27,9 @@
 
 $config = require __DIR__.'/config.php';
 require_once(__DIR__.'/functions.php');
-/*
-$pagename = 'callstatus.htm';
 
-if (isset($config['obihai']['host'])) {
-  $host = $config['obihai']['host'];
-  $username = $config['obihai']['credentials']['username'];
-  $password = $config['obihai']['credentials']['password'];
-  $scheme = $config['obihai']['scheme'];
-} else {
-  die('Please configure the software.');
+$currentcaller = getCurrentCaller();
+
+if ($empty($currentcaller)) {
+  echo "No current callers.";
 }
-
-$url = "{$scheme}://{$host}/{$pagename}";
-
-try {
-    $raw_response  =  curl_get($url,$username, $password);
-    }
-
- catch(Exception $ex) {
-    echo $ex->getMessage() . "We caught an exception.";
-    $raw_response = null;
-    }
-
-  // Testing with flat files
-  //  $raw_response = file_get_contents('callstatus-example2.txt');
-
-  if (!empty($raw_response)) {
-$results = parseCurrentCaller($raw_response);
-
-var_dump($results);
-  }
-  */
-  print_r(getCurrentCaller());
