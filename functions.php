@@ -424,9 +424,12 @@ function openCNAM ($number) {
 
 function updateRisk ($number, $data) {
     $phonebook = json_decode(file_get_contents('phone_book.json'), true);
+ 
+    $data = json_decode($data,true);
   
-  if (array_key_exists($number,$phonebook)) {
+    if (array_key_exists($number,$phonebook)) {
     $phonebook[$number]['spamRisk'] = $data['spamRisk']['level'];
+   // $phonebook[$number][] = array('spamRisk' => $data['spamRisk']['level']);
   }
   $phonebook = json_encode($phonebook);
   $updatedPhonebook = file_put_contents('phone_book.json',$phonebook);
