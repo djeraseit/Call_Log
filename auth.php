@@ -1,4 +1,14 @@
 <?php
+
+/**
+* Megalith Technologies
+*
+* @category VoIP
+* @author Theodis Butler
+* @copyright Copyright (c) 2021 Megalith Technologies (https://megalithtechnologies.com)
+* @license https://www.gnu.org/licenses/gpl-3.0.en.html
+*/
+
 require_once(__DIR__.'/config.php');
 require_once(__DIR__.'/simple_html_dom.php');
 $opencnam = 'https://api.opencnam.com/v2/phone/+155555555';

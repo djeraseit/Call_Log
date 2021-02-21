@@ -1,5 +1,14 @@
 <?php
 
+/**
+* Megalith Technologies
+*
+* @category VoIP
+* @author Theodis Butler
+* @copyright Copyright (c) 2021 Megalith Technologies (https://megalithtechnologies.com)
+* @license https://www.gnu.org/licenses/gpl-3.0.en.html
+*/
+
 function curl_post($Url,$username = 'admin', $password = 'admin',$payload = array()){
 
   $options = array(
@@ -167,4 +176,34 @@ curl_close($ch);
 
 return $output;
 
+}
+
+function getCallerAndHangup() {
+
+  // array of curl handles
+$multiCurl = array();
+// data to be returned
+$result = array();
+// multi handle
+$mh = curl_multi_init();
+foreach ($ids as $i => $id) {
+  // URL from which data will be fetched
+  $fetchURL = 'https://webkul.com&customerId='.$id;
+  $multiCurl[$i] = curl_init();
+  curl_setopt($multiCurl[$i], CURLOPT_URL,$fetchURL);
+  curl_setopt($multiCurl[$i], CURLOPT_HEADER,0);
+  curl_setopt($multiCurl[$i], CURLOPT_RETURNTRANSFER,1);
+  curl_multi_add_handle($mh, $multiCurl[$i]);
+}
+$index=null;
+do {
+  curl_multi_exec($mh,$index);
+} while($index > 0);
+// get content and remove handles
+foreach($multiCurl as $k => $ch) {
+  $result[$k] = curl_multi_getcontent($ch);
+  curl_multi_remove_handle($mh, $ch);
+}
+// close
+curl_multi_close($mh);
 }

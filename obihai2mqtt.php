@@ -1,4 +1,14 @@
 <?php
+
+/**
+* Megalith Technologies
+*
+* @category VoIP
+* @author Theodis Butler
+* @copyright Copyright (c) 2021 Megalith Technologies (https://megalithtechnologies.com)
+* @license https://www.gnu.org/licenses/gpl-3.0.en.html
+*/
+
 //php obihai2mqtt.php --obihai_host 192.168.42.2 --obihai_user admin --obihai_pass megalith --mqtt_host eagle.rmq.cloudamqp.com --mqtt_user rcndzvbo:rcndzvbo --mqtt_topic obihai --mqtt_pass E-BaZornNc1uuSID1kjuVmzDsj1UrxVY
 
 //require __DIR__ . '/vendor/bluerhinos/phpmqtt/phpMQTT.php';

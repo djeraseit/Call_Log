@@ -1,8 +1,17 @@
 <?php
+
+/**
+* Megalith Technologies
+*
+* @category VoIP
+* @author Theodis Butler
+* @copyright Copyright (c) 2021 Megalith Technologies (https://megalithtechnologies.com)
+* @license https://www.gnu.org/licenses/gpl-3.0.en.html
+*/
+
 require_once(__DIR__.'/config.php');
 require_once(__DIR__.'/functions.php');
-error_reporting(E_ALL); 
-ini_set( 'display_errors','1');
+
 $opencnam = 'https://api.opencnam.com/v2/phone/+15555555555';
 
 if (isset($config['obihost'])) {
