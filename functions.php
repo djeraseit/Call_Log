@@ -51,7 +51,19 @@ function curl_post($Url,$username = 'admin', $password = 'admin',$payload = arra
  $ch = curl_init();
  curl_setopt_array( $ch, $options );
 
+  // validate CURL status
+  if(curl_errno($ch))
+     throw new Exception(curl_error($ch), 500);
+  // validate HTTP status code (user/password credential issues)
+  $status_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+  if ($status_code != 200)
+      throw new Exception("Response with Status Code [" . $status_code . "].", 500);
+
+
  $output = curl_exec($ch);
+
+    if ($output === null) echo('No response');
+     throw new Exception($ex);
 
  if ($ch != null) curl_close($ch);
 
@@ -468,6 +480,14 @@ $updatedWhitelist = file_put_contents('whitelist_numbers.json',$whitelist);
 return $updatedWhitelist;
 }
 
+function generateBlackListNumbers($phonebookjson){
+  $blacklist = json_decode($phonebookjson,true);
+}
+
+function generateWhiteListNumbers($phonebookjson){
+  $blacklist = json_decode($phonebookjson,true);
+}
+
 function numverify($accessKey,$phoneNumber = '15555555555') {
 
 $ch = curl_init('http://apilayer.net/api/validate?access_key='.$accessKey.'&number='.$phoneNumber.'&country_code='.'&format=1');  
@@ -542,3 +562,4 @@ function twilioNomorobo($sid, $authToken, $callee = '+17136331642', $phonenumber
 
  return $output;
 }
+

@@ -20,3 +20,4 @@ Call_Log ver 3.2 TODO
 12. Twilio integration
 13. Look into append mode for file_put_contents
 14. Queue spam lookup for new calls
+15. Check if file exists for blacklists and whitelists

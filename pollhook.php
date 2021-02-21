@@ -28,7 +28,8 @@
 
 //php pollhook.php --obihai_host 192.168.42.2 --obihai_user admin --obihai_pass megalith
 
-require_once(__DIR__.'/config.php');
+$config = require_once(__DIR__.'/config.php');
+require_once(__DIR__.'/functions.php');
 
 $longOpts = array(
   'poll_freq:',
@@ -51,7 +52,7 @@ $obihai_host = $options['obihai_host'];
 $obihai_user = (isset($options['obihai_user']) ? $options['obihai_user'] : 'admin');
 $obihai_pass = (isset($options['obihai_pass']) ? $options['obihai_pass'] : 'admin');
 
-$url = 'http://' . $obihai_host . '/PI_FXS_1_Stats.xml';
+$url = "http://" . $obihai_host . "/PI_FXS_1_Stats.xml" . "&time=".time(); //add time to cache
 
 $curl = curl_init();
 curl_setopt($curl, CURLOPT_URL, $url);
@@ -100,10 +101,10 @@ while (true)
     $i = 1;
     foreach ($states as $state)
     {
-        if ($state == 'Ringing') getCallerAndLookup($obihai_host, $obihai_user, $obihai_pass, $state);
-      echo $state . PHP_EOL; // On Hook, Ringing, Off Hook
-      echo '/state_line' . $i . PHP_EOL;
-      // need to do something like call block when Ringing, and when Off Hook start recording, when On Hook, get last caller, etc
+      // TODO: need to do something like call block when Ringing, and when Off Hook start recording, when On Hook, get last caller, etc
+        if ($state == 'Ringing') getCallerAndLookup2($obihai_host, $obihai_user, $obihai_pass, $state);
+      echo $state . ' ' . $i . PHP_EOL; // On Hook, Ringing, Off Hook
+      
       $i++;
     }    
    // $mqtt->close();
