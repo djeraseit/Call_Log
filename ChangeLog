@@ -1,0 +1,45 @@
+Call_Log version history (public releases)
+====================
+
+ver 3.2
+	* Installer
+	* Web interface to make easy to install and use
+	  Call_Log
+
+-------------------------------------------------------------------------
+
+ver 3.1
+
+changed:
+	* Add a lot of fixes
+
+-------------------------------------------------------------------------
+ver 3.0
+
+added:
+	* new feature - Nomorobo lookup
+	* bootstrapphonebook.php - stand alone command
+
+changed:
+	* bugfixes in core lib
+	* output text
+	* autotools fix 
+
+-------------------------------------------------------------------------
+ver 2.1
+	* bugfuxes
+
+-------------------------------------------------------------------------
+ver 2.0
+	* major core rewrite
+	* new config options
+
+-------------------------------------------------------------------------
+
+ver 1.4.2
+	* minor bugfixes
+
+-------------------------------------------------------------------------
+
+ver 0.0.1
+	* HTTP proxy support.

@@ -1,0 +1,22 @@
+# TODO
+
+
+Call_Log ver 3.2 TODO
+===================
+
+   Web interface
+
+1. Add duration of call in history (i.e. Call start, call answered, call ended)
+2. Multicurl to get caller info and hangup at the same time.
+3. Create SaaS using syslog function
+4. Send to Loggly
+5. Automatically record calls
+6. Export call history to CSV
+7. Integration with OpenCNAM
+8. Admin Web interface to view the calls, add caller id info and analytics
+9. Check robocall and SPAM score with Youmail
+10. Database connectivity
+11. Redis queue/memcache functionality
+12. Twilio integration
+13. Look into append mode for file_put_contents
+14. Queue spam lookup for new calls
