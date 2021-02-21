@@ -25,21 +25,21 @@
 * along with this program.  If not, see https://www.gnu.org/licenses/gpl-3.0.en.html.
 */
 
-
-require_once(__DIR__.'/config.php');
+$config = require __DIR__.'/config.php';
 require_once(__DIR__.'/functions.php');
 
 // return config.php (using file_get_contents or $config)
-if (isset($config['obihost'])) {
-  $host = $config['obihost'];
-  $username = $config['obiusername'];
-  $password = $config['obipassword'];
-  $scheme = $config['scheme'];
+
+if (isset($config['obihai']['host'])) {
+  $host = $config['obihai']['host'];
+  $username = $config['obihai']['credentials']['username'];
+  $password = $config['obihai']['credentials']['password'];
+  $scheme = $config['obihai']['scheme'];
 } else {
 $host = '192.168.42.2';
 $username = "admin";
 $password = "admin";
-$scheme = $config['scheme'];
+$scheme = "http";
 }
 
 if (isset($GET['item'])) {

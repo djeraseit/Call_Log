@@ -195,7 +195,9 @@ return $output;
 
 }
 
-function getCallerAndHangup() {
+function getCallerAndLookup() {}
+
+function getCallerAndHangup($scheme, $host, $username, $password) {
 
   // array of curl handles
 $multiCurl = array();
@@ -203,32 +205,62 @@ $multiCurl = array();
 $result = array();
 // multi handle
 $mh = curl_multi_init();
-$item = '';
-$url1 = 'callstatus.htm?item=' .$item;
-$url2 = 'callstatus.htm';
+$item = "0x45cbf0";
+$prefix = "{$scheme}://{$host}/";
+
+$url1 = $prefix . 'callstatus.htm';
+$url2 = $prefix . 'callstatus.htm?item=' .$item;
+
 $urls = array($url1,$url2);
 $url_count = count($urls);
 
-foreach ($ids as $i => $id) {
-  // URL from which data will be fetched
-  $fetchURL = 'https://webkul.com&customerId='.$id;
-  $multiCurl[$i] = curl_init();
-  curl_setopt($multiCurl[$i], CURLOPT_URL,$fetchURL);
-  curl_setopt($multiCurl[$i], CURLOPT_HEADER,0);
-  curl_setopt($multiCurl[$i], CURLOPT_RETURNTRANSFER,1);
-  curl_multi_add_handle($mh, $multiCurl[$i]);
+$authorization = $username . ":" . $password;
+
+// Post fields for hanging up
+$payload = array("item"=>$item,'value'=>'Remove');
+
+$i = 0;
+foreach($urls as $url) {
+$multiCurl[$i] = curl_init();
+curl_setopt($multiCurl[$i], CURLOPT_URL, $url);
+curl_setopt($multiCurl[$i], CURLOPT_HEADER, 0);
+
+if ($i == 1) {
+curl_setopt($multiCurl[$i], CURLOPT_POST, true); // post on second url
+curl_setopt($multiCurl[$i], CURLOPT_POSTFIELDS, $payload); // post on second url
 }
-$index=null;
+
+curl_setopt($multiCurl[$i], CURLOPT_RETURNTRANSFER, true);
+curl_setopt($multiCurl[$i], CURLOPT_USERAGENT, 'CallBlocker');
+curl_setopt($multiCurl[$i], CURLOPT_FOLLOWLOCATION, true);
+curl_setopt($multiCurl[$i], CURLOPT_NOPROXY,'*'); // do not use proxy
+curl_setopt($multiCurl[$i], CURLOPT_SSL_VERIFYPEER, false);    // for https
+curl_setopt($multiCurl[$i], CURLOPT_USERPWD, $authorization);
+curl_setopt($multiCurl[$i], CURLOPT_HTTPAUTH, CURLAUTH_DIGEST);
+curl_setopt($multiCurl[$i], CURLOPT_TIMEOUT, 5);
+curl_setopt($multiCurl[$i], CURLOPT_CONNECTTIMEOUT, 5);
+curl_setopt($multiCurl[$i], CURLOPT_REFERER, 'https://www.theodis.com');
+curl_multi_add_handle($mh, $multiCurl[$i]);
+$i ++;
+}
+
+$active = null;
 do {
-  curl_multi_exec($mh,$index);
-} while($index > 0);
-// get content and remove handles
-foreach($multiCurl as $k => $ch) {
-  $result[$k] = curl_multi_getcontent($ch);
-  curl_multi_remove_handle($mh, $ch);
-}
-// close
-curl_multi_close($mh);
+  $mrc = curl_multi_exec($mh, $active);
+  //usleep(100); // Maybe needed to limit CPU load (See P.S.)
+  } while ($active);
+  $content = array();
+
+  $i = 0;
+  foreach ($muliCurl AS $i => $c) {
+  $content[$i] = curl_multi_getcontent($c);
+  curl_multi_remove_handle($mh, $c);
+  }
+
+  curl_multi_close($mh);
+
+  return $content;
+  
 }
 
 function parseCurrentCaller($html) {
