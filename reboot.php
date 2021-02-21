@@ -43,8 +43,7 @@ if (isset($config['obihai']['host'])) {
 $pagename = 'rebootgetconfig.htm';
 
 $url = "{$scheme}://{$host}/{$pagename}";
-$username = "admin";
-$password = "admin";
+
 $options = array(
         CURLOPT_URL            => $url,
         CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
