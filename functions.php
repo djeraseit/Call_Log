@@ -389,20 +389,10 @@ function callHistoryJson($xmldata) {
   $json = json_encode($xml);
   $array = json_decode($json,TRUE);
 
-  //$callhistoryjson = [];
-
   foreach ($array as $v => $call) {
-    //var_dump($call);
-     // die();
+  
     foreach ($call as $caller){
-      
-     // $history['Name'] = $caller['Terminal'][0]['Peer']['@attributes']['name'];
-     // $history['Number'] = $caller['Terminal'][0]['Peer']['@attributes']['number'];
-     // $history['Direction'] = $caller['Terminal'][0]['@attributes']['dir'];
-     // $history['Date'] = $caller['@attributes']['date'];
-     // $history['Time'] = $caller['@attributes']['time'];
-    // $history['Events'] = $caller['Terminal'][0]['Event']; // array
-     // $callhistoryjson[] = $history;
+     
      $historyname= $caller['Terminal'][0]['Peer']['@attributes']['name'];
      $historynumber = $caller['Terminal'][0]['Peer']['@attributes']['number'];
      $historydirection = $caller['Terminal'][0]['@attributes']['dir'];
