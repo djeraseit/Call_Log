@@ -65,7 +65,10 @@ $mqtt_topic = (isset($options['mqtt_topic']) ? $options['mqtt_topic'] : 'obihai'
 //$mqtt = new phpMQTT($mqtt_host, $mqtt_port, 'obihai2mqtt_'.rand());
 $mqtt = new bluerhinos\phpMQTT($mqtt_host, $mqtt_port, 'obihai2mqtt_'.rand());
 
-$url = "http://" . $obihai_host . "/PI_FXS_1_Stats.xml" . "&time=".time(); //add time to prevent cache
+// TODO: Check if this is best place to put curl connection. MQTT seems to work normally.
+
+//$url = "http://" . $obihai_host . "/PI_FXS_1_Stats.xml" . "&time=".time(); //add time to prevent cache
+$url = "http://" . $obihai_host . "/PI_FXS_1_Stats.xml"; //add time to prevent cache
 
 $curl = curl_init();
 curl_setopt($curl, CURLOPT_URL, $url);
