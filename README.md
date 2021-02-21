@@ -20,19 +20,3 @@ After a quick, one-time setup, incoming calls are able to be analyzed. If it’s
 
 But if it’s a robocall, we answer the call immediately. To prevent false positives, instead of just hanging up, the caller is presented with an audio CAPTCHA. If the caller passes the test and proves they are human, the call is allowed through. If they fail, we hang up the call.
 
-## TODO
-
-1. Add duration of call in history (i.e. Call start, call answered, call ended)
-2. Multicurl to get caller info and hangup at the same time.
-3. Create SaaS using syslog function
-4. Send to Loggly
-5. Automatically record calls
-6. Export call history to CSV
-7. Integration with OpenCNAM
-8. Admin Web interface to view the calls, add caller id info and analytics
-9. Check robocall and SPAM score with Youmail
-10. Database connectivity
-11. Redis queue/memcache functionality
-12. Twilio integration
-13. Look into append mode for file_put_contents
-14. Queue spam lookup for new calls
