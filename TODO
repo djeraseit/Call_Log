@@ -21,3 +21,13 @@ Call_Log ver 3.2 TODO
 13. Look into append mode for file_put_contents
 14. Queue spam lookup for new calls
 15. Check if file exists for blacklists and whitelists
+16. Performance: Use cookies and don't reauthenticate (check headers)
+17. Use Cloudflare Javascript workers to combine API responses (with cache)
+18. Use user login instead of admin login
+19. Use star codes to block Caller ID
+20. Default instructions *77 to block anonymous callers
+21. Use Blind Transfer or dual ringing to block callers at SaaS (or digit maps)
+22. Use digit maps to white list SaaS if performing call blocking there
+23. Integration: Google Hub to display caller info
+24. Scrape and update InboundCallRoute for blocking
+25. Use custom firmware to increase InboundCallRoute fields length

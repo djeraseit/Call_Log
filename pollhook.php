@@ -100,15 +100,20 @@ $output = curl_exec($curl);
     }
   }
   
+  $callerinfo = "";
+
  // if ($mqtt->connect(true, null, $mqtt_user, $mqtt_pass))
   //{
     $i = 1;
     foreach ($states as $state)
     {
       // TODO: need to do something like call block when Ringing, and when Off Hook start recording, when On Hook, get last caller, etc
-        if ($state == 'Ringing') getCallerAndLookup($obihai_host, $obihai_user, $obihai_pass, $state);
-      echo $state . ' ' . $i . PHP_EOL; // On Hook, Ringing, Off Hook
-      
+        if ($state == 'Ringing') {
+            //$callerinfo = getCallerAndLookup($obihai_host, $obihai_user, $obihai_pass, $state);
+            $hangup = hangup();
+        }
+              echo $state . ' ' . $i . PHP_EOL; // On Hook, Ringing, Off Hook
+              echo $callerinfo . PHP_EOL;      
       $i++;
     }    
    // $mqtt->close();

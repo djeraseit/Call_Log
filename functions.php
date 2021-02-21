@@ -106,6 +106,9 @@ function curl_get($Url,$username = 'admin', $password = 'admin'){
       throw new Exception("Response with Status Code [" . $status_code . "].", 500);
 
  $output = curl_exec($ch);
+ 
+    if ($output === null) echo('No response');
+     throw new Exception($ex);
 
  curl_close($ch);
 
@@ -337,23 +340,42 @@ $doc->loadHTML($html);
 // discard white space
 $doc->preserveWhiteSpace = false;
 $activetable = $doc->getElementsByTagName('table')->item(0);
+$callremove = $doc->getElementsByTagName('form')->item(0);
 
-/*
-$rows = $activetable->children(0)->children();
- 
-foreach($rows as $row) {
- foreach($row->children() as $column) {
-  if(!empty($column->innertext)) {
-   echo $column->innertext . '<br />' . PHP_EOL;
-  }
- }
+foreach($activetable->getElementsByTagName('tr') as $tractive) {
+$tdactive = $tractive->getElementsByTagName('td');
+$activecallfield = $tdactive->item(0)->nodeValue;
+preg_match_all('!\d+!', $activecallfield, $matches);
+$totalactivecalls = (int) $matches;
 }
-*/
+
 $call = [];
 //$rows = $tables->item(1)->getElementsByTagName('tr');
 $calltable = $doc->getElementsByTagName('table')->item(1);
 //echo $activetable->getElementsByTagName('tr') ;
+/*
+$callremove = $doc->getElementsByTagName('form')->item(0);
 
+foreach ($callremove as $form) {
+  echo $form->nodeValue, PHP_EOL;
+}
+*/
+
+
+
+//var_dump($callremove);
+foreach ($callremove as $form) {
+  var_dump($form);
+  echo $form->getAttribute('action');
+}
+/*
+$xpath = new DOMXpath( $doc );
+$col=$xpath->query('//form/action');
+
+if( is_object( $col ) ){
+    foreach( $col as $node ) echo $node->tagName.' '.$node->nodeValue.'<br />';
+}
+*/
 
 // iterate over each row in the table
 foreach($calltable->getElementsByTagName('tr') as $tr)
@@ -380,16 +402,19 @@ foreach($calltable->getElementsByTagName('tr') as $tr)
 // 5 - Start Time
 // 6 - Duration
 // 7 - Direction
+// 8 - Item for recording or hanging up
 
-$activecalls = '';
+
 $callState = $call[2];
 $callerName = $call[3];
 $callerNumber = $call[4];
 $callStart = $call[5];
 $callDuration = $call[6];
 $callDirection = $call[7];
+$callItem = '';
 
-$currentcall = array($callState,$callerName,$callerNumber,$callStart,$callDuration,$callDirection);
+$currentcall = array('State'=>$callState,'Name'=>$callerName,'Number'=>$callerNumber,'StartTime'=>$callStart,'Duration'=>$callDuration,'Direction'=>$callDirection, 
+'ActiveCalls'=> $totalactivecalls);
 //echo $doc->saveHTML();
 return $currentcall;
 }
@@ -563,3 +588,35 @@ function twilioNomorobo($sid, $authToken, $callee = '+17136331642', $phonenumber
  return $output;
 }
 
+function hangup($item ='0x45cbf0') {
+  $config = require __DIR__.'/config.php';
+
+// return config.php (using file_get_contents or $config)
+
+if (isset($config['obihai']['host'])) {
+  $host = $config['obihai']['host'];
+  $username = $config['obihai']['credentials']['username'];
+  $password = $config['obihai']['credentials']['password'];
+  $scheme = $config['obihai']['scheme'];
+} else {
+die('Configuration needed.');
+}
+
+$value = "Remove";
+$payload = array("item"=>$item,'value'=>$value);
+$pagename = 'callstatus.htm?item=' . $item;
+$scheme = "http";
+
+$url = "{$scheme}://{$host}/{$pagename}";
+
+try {
+  $raw_response  =  curl_post($url,$username,$password,$payload);
+}
+ catch(Exception $ex) {
+    echo $ex->getMessage() .$url . ' ' . $username . '' . $password;
+    print_r($payload);
+    $raw_response = "we caught an exception.";
+}
+
+return $raw_response;
+}

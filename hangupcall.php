@@ -56,7 +56,6 @@ $url = "{$scheme}://{$host}/{$pagename}";
 
 try {
   $raw_response  =  curl_post($url,$username,$password,$payload);
-
 }
  catch(Exception $ex) {
     echo $ex->getMessage();

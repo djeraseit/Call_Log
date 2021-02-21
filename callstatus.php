@@ -42,15 +42,11 @@ if (isset($config['obihai']['host'])) {
 $url = "{$scheme}://{$host}/{$pagename}";
 
 try {
-  $raw_response  =  curl_get($url,$username, $password);
-
+    $raw_response  =  curl_get($url,$username, $password);
     }
 
  catch(Exception $ex) {
- /*
-    if ($raw_response === null) echo('No response');
-     throw new Exception($ex);
-*/
+    echo $ex->getMessage();
     }
 
 $raw_response = file_get_contents('callstatus-example2.txt');
