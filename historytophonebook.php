@@ -32,16 +32,25 @@ foreach ($phonehistory as $contact) {
     
     //$callhistory = $contact['CallHistory'];
    
-    if (!empty($contact['Number'])) {
+    if (!empty($contact['Number']) && empty($contact['Name']) && strlen($contact) >= 10) {
         $phonenumber = $contact['Number'];
+        $fullname = null;
         //$entry[$phonenumber] = array('Name' => $fullname,'Number'=> $phonenumber);
     
+    } elseif (!empty($contact['Name']) && !empty($contact['Number'])) {
+        $fullname = $contact['Name'];
+        $phonenumber = $contact['Number'];        
+    } else {
+     continue;
     }
-    if (!empty($contact['Name'])) {
-        $fullname = $contact['Name'];        
-    }
-    if (!empty($phonenumber) && !empty($fullname)) $entry[$phonenumber] = array('Name' => $fullname);
+    $entry[$phonenumber] = array('Name' => $fullname);
 }
+// remove duplicates before inserting into phonebook
+
+//$temp = array_flip($entry);
+//$temp2 = array_unqiue($entry);
+//$entry = array_flip($entry);
+
 var_dump($entry);
 $output = json_encode($entry);
 file_put_contents('phone_book.json',$output);
