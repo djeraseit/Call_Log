@@ -7,7 +7,6 @@ require_once(__DIR__.'/functions.php');
 $pagename = 'callstatus.htm';
 $scheme = 'http';
 
-
 if (isset($config['obihost'])) {
     $host = $config['obihost'];
     $username = $config['obiusername'];

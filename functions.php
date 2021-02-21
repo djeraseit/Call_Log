@@ -1,9 +1,7 @@
 <?php
 
 function curl_post($Url,$username = 'admin', $password = 'admin',$payload = array()){
- 
-  //http_build_query($payload)
-  // Now set some options (most are optional)
+
   $options = array(
     CURLOPT_URL            => $Url,
     CURLOPT_HEADER         => false,    

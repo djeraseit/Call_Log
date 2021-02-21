@@ -23,10 +23,8 @@ $item = $_GET['item'];
 }
 $value = "Remove";
 $payload = array("item"=>$item,'value'=>$value);
-$pagename = 'callstatus.htm?' . $item;
+$pagename = 'callstatus.htm?item=' . $item;
 $scheme = "http";
-$url = "{$scheme}://{$host}/{$pagename}";
-
 
 $url = "{$scheme}://{$host}/{$pagename}";
 
@@ -50,4 +48,4 @@ try {
 */
     }
 
-echo ($raw_response);
+//echo ($raw_response);
