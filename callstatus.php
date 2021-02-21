@@ -46,11 +46,15 @@ try {
     }
 
  catch(Exception $ex) {
-    echo $ex->getMessage();
+    echo $ex->getMessage() . "We caught an exception.";
+    $raw_response = null;
     }
 
-$raw_response = file_get_contents('callstatus-example2.txt');
+  // Testing with flat files
+  //  $raw_response = file_get_contents('callstatus-example2.txt');
 
+  if (!empty($raw_response)) {
 $results = parseCurrentCaller($raw_response);
 
 var_dump($results);
+  }

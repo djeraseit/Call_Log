@@ -50,6 +50,7 @@ function curl_post($Url,$username = 'admin', $password = 'admin',$payload = arra
  
  $ch = curl_init();
  curl_setopt_array( $ch, $options );
+ $output = curl_exec($ch);
 
   // validate CURL status
   if(curl_errno($ch))
@@ -59,11 +60,8 @@ function curl_post($Url,$username = 'admin', $password = 'admin',$payload = arra
   if ($status_code != 200)
       throw new Exception("Response with Status Code [" . $status_code . "].", 500);
 
-
- $output = curl_exec($ch);
-
-    if ($output === null) echo('No response');
-     throw new Exception($ex);
+    if ($output === null)
+     throw new Exception('No Response');
 
  if ($ch != null) curl_close($ch);
 
@@ -89,9 +87,10 @@ function curl_get($Url,$username = 'admin', $password = 'admin'){
     CURLOPT_TCP_KEEPALIVE => 1, // for callhistoryxml
     CURLOPT_TCP_KEEPIDLE => 2, // for call historyxml
 );
- // OK cool - then let's create a new cURL resource handle
+
  $ch = curl_init();
  curl_setopt_array( $ch, $options );
+ $output = curl_exec($ch);
 
  //curl_setopt($ch, CURLOPT_PROXY, "proxy.YOURSITE.com");
  //curl_setopt($ch, CURLOPT_PROXYPORT, 8080);
@@ -103,12 +102,10 @@ function curl_get($Url,$username = 'admin', $password = 'admin'){
   // validate HTTP status code (user/password credential issues)
   $status_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
   if ($status_code != 200)
-      throw new Exception("Response with Status Code [" . $status_code . "].", 500);
+      throw new Exception($Url . " OUTPUT: " . $output . " Response with Status Code [" . $status_code . "].", 500);
 
- $output = curl_exec($ch);
- 
-    if ($output === null) echo('No response');
-     throw new Exception($ex);
+    if ($output === null)
+     throw new Exception('No response');
 
  curl_close($ch);
 
@@ -337,10 +334,11 @@ libxml_use_internal_errors(true);
 $doc->validateOnParse = true;
 
 $doc->loadHTML($html);
-// discard white space
+
 $doc->preserveWhiteSpace = false;
+
 $activetable = $doc->getElementsByTagName('table')->item(0);
-$callremove = $doc->getElementsByTagName('form')->item(0);
+
 
 foreach($activetable->getElementsByTagName('tr') as $tractive) {
 $tdactive = $tractive->getElementsByTagName('td');
@@ -353,29 +351,11 @@ $call = [];
 //$rows = $tables->item(1)->getElementsByTagName('tr');
 $calltable = $doc->getElementsByTagName('table')->item(1);
 //echo $activetable->getElementsByTagName('tr') ;
-/*
-$callremove = $doc->getElementsByTagName('form')->item(0);
 
-foreach ($callremove as $form) {
-  echo $form->nodeValue, PHP_EOL;
-}
-*/
+$callremove = $doc->getElementsByTagName('form')->item(0)->getAttribute('action');
+$formarray = explode("=",$callremove);
+$callItem = $formarray[1];
 
-
-
-//var_dump($callremove);
-foreach ($callremove as $form) {
-  var_dump($form);
-  echo $form->getAttribute('action');
-}
-/*
-$xpath = new DOMXpath( $doc );
-$col=$xpath->query('//form/action');
-
-if( is_object( $col ) ){
-    foreach( $col as $node ) echo $node->tagName.' '.$node->nodeValue.'<br />';
-}
-*/
 
 // iterate over each row in the table
 foreach($calltable->getElementsByTagName('tr') as $tr)
@@ -405,18 +385,17 @@ foreach($calltable->getElementsByTagName('tr') as $tr)
 // 8 - Item for recording or hanging up
 
 
-$callState = $call[2];
+$callState = ucfirst($call[2]);
 $callerName = $call[3];
 $callerNumber = $call[4];
 $callStart = $call[5];
 $callDuration = $call[6];
 $callDirection = $call[7];
-$callItem = '';
 
-$currentcall = array('State'=>$callState,'Name'=>$callerName,'Number'=>$callerNumber,'StartTime'=>$callStart,'Duration'=>$callDuration,'Direction'=>$callDirection, 
-'ActiveCalls'=> $totalactivecalls);
+$currentcall = array('State'=>$callState,'Name'=>$callerName,'Number'=>$callerNumber,'StartTime'=>$callStart,'Duration'=>$callDuration,
+'Direction'=>$callDirection, 'Item'=>$callItem,'ActiveCalls'=> $totalactivecalls);
 //echo $doc->saveHTML();
-return $currentcall;
+return json_encode($currentcall);
 }
 
 function callHistoryJson($xmldata) {
