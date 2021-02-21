@@ -31,7 +31,7 @@ require_once(__DIR__.'/functions.php');
 if (isset($config['youmail']['credentials']['key'])) {
   $youmailKey = $config['youmail']['credentials']['key'];
   $youmailSid = $config['youmail']['credentials']['sid'];
-  $phone = $config['general']['phone'];
+  $phonenum = $config['general']['phone'];
 } else {
  die('No call checker service configured.');
 }
@@ -50,7 +50,8 @@ if (!empty($entry)) {
 */
 
 foreach ($phonebook as $phonenumber => $contact) {
-    $payload = array('callee'=>$phone, 'callerId'=> $contact['Name']); 
+   
+    $payload = array('callee'=>$phonenum, 'callerId'=> $contact['Name']); 
     try {
         $lookupdetails = youmailLookup($youmailKey,$youmailSid,$phonenumber,$payload); 
     } catch(Exception $e){
@@ -69,8 +70,9 @@ foreach ($phonebook as $phonenumber => $contact) {
     if (isset($response['spamRisk']['reasonMessage'])) $response['spamRisk']['reasonMessage'];
     if (isset($response['timestamp'])) $timestamp = $response['timestamp'];
     
-   
-    var_dump($response);
+   // update risk
+   updateRisk($phonenumber,json_encode($response));
+   // var_dump($response);
     } else {
         die('Something bad happened.');
     }

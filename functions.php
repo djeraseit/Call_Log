@@ -150,20 +150,17 @@ function pb_alert($pbtoken = 'o.mjCLA2hY2n5jVnwGwHrIDO76KccJtIbl',$payload = arr
 
 }
 
-function youmailLookup($apikey = 'o.mjCLA2hY2n5jVnwGwHrIDO76KccJtIbl',$apisid = '',$phone = '',$payload = array()) {
+function youmailLookup($apikey = null,$apisid = null,$phonenum = '',$payload = array()) {
   
-  if (empty($payload)) {
-  $payload = array('callee'=>'7136331642','callerId'=>'Theodis Butler');
 
+  if (!empty($payload)) {
+    $callerinfo['callee'] = $payload['callee'];
+    $callerinfo['callerId'] = $payload['callerId'];
   } 
+  
   
   //$callerinfo = [];
   if (empty($payload['callee'])) throw new Exception("Phone number missing!"); // throw new exception
-  
-  $callerinfo['callee'] = $payload['callee'];
-  $callerinfo['callerId'] = $payload['callerId'];
-  
-  $phonenum = $callerinfo['callee'];
 
   $data = http_build_query($callerinfo); 
   $url = "https://dataapi.youmail.com/api/v2/phone/{$phonenum}?" . $data;
@@ -182,6 +179,11 @@ function youmailLookup($apikey = 'o.mjCLA2hY2n5jVnwGwHrIDO76KccJtIbl',$apisid = 
   CURLOPT_CONNECTTIMEOUT => 5,
   CURLOPT_REFERER => 'https://www.theodis.com'
 );
+
+//curl_setopt($ch, CURLOPT_PROXY, "proxy.YOURSITE.com");
+//curl_setopt($ch, CURLOPT_PROXYPORT, 8080);
+//curl_setopt ($ch, CURLOPT_PROXYUSERPWD, "username:password"); 
+
 // OK cool - then let's create a new cURL resource handle
 $ch = curl_init();
 curl_setopt_array( $ch, $options );
@@ -207,15 +209,9 @@ try {
 if ($ch != null) curl_close($ch);
 
 
-//curl_setopt($ch, CURLOPT_PROXY, "proxy.YOURSITE.com");
-//curl_setopt($ch, CURLOPT_PROXYPORT, 8080);
-//curl_setopt ($ch, CURLOPT_PROXYUSERPWD, "username:password"); 
-
-// Download the given URL, and return output
-
 
 // Close the cURL resource, and free system resources
-curl_close($ch);
+//curl_close($ch);
 
 return $output;
 
@@ -227,7 +223,7 @@ function addPhonebook ($entry = array()) {
     $phonebook[$phonenumber]['Name'] = $entry['fullname'];
     $phonebook[$phonenumber]['LastCall'] = $entry['lastcalldatetime'];
     
-    file_put_contents('phone_book.json',json_encode($phonebook), LOCK_EX); // append?
+    file_put_contents('phone_book.json',json_encode($phonebook), FILE_APPEND | LOCK_EX); // append?
     }
     return true;
 }
@@ -424,4 +420,15 @@ function callHistoryJson($xmldata) {
 
 function openCNAM ($number) {
   $endpoint = 'https://api.opencnam.com/v2/phone/+' . $number;
+}
+
+function updateRisk ($number, $data) {
+    $phonebook = json_decode(file_get_contents('phone_book.json'), true);
+  
+  if (array_key_exists($number,$phonebook)) {
+    $phonebook[$number]['spamRisk'] = $data['spamRisk']['level'];
+  }
+  $phonebook = json_encode($phonebook);
+  $updatedPhonebook = file_put_contents('phone_book.json',$phonebook);
+  return $updatedPhonebook;
 }
