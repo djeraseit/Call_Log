@@ -271,6 +271,7 @@ foreach($calltable->getElementsByTagName('tr') as $tr)
 }
 // Future parse multiple calls (i.e. second table) if active calls >=1
 //var_dump($call);
+
 // 0 - Call 1
 // 1 - Terminal ID
 // 2 - State
