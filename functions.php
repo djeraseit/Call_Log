@@ -203,6 +203,12 @@ $multiCurl = array();
 $result = array();
 // multi handle
 $mh = curl_multi_init();
+$item = '';
+$url1 = 'callstatus.htm?item=' .$item;
+$url2 = 'callstatus.htm';
+$urls = array($url1,$url2);
+$url_count = count($urls);
+
 foreach ($ids as $i => $id) {
   // URL from which data will be fetched
   $fetchURL = 'https://webkul.com&customerId='.$id;
@@ -223,4 +229,66 @@ foreach($multiCurl as $k => $ch) {
 }
 // close
 curl_multi_close($mh);
+}
+
+function parseCurrentCaller($html) {
+
+  $doc = new DOMDocument();
+libxml_use_internal_errors(true);
+$doc->validateOnParse = true;
+
+$doc->loadHTML($html);
+// discard white space
+$doc->preserveWhiteSpace = false;
+$activetable = $doc->getElementsByTagName('table')->item(0);
+
+/*
+$rows = $activetable->children(0)->children();
+ 
+foreach($rows as $row) {
+ foreach($row->children() as $column) {
+  if(!empty($column->innertext)) {
+   echo $column->innertext . '<br />' . PHP_EOL;
+  }
+ }
+}
+*/
+$call = [];
+//$rows = $tables->item(1)->getElementsByTagName('tr');
+$calltable = $doc->getElementsByTagName('table')->item(1);
+//echo $activetable->getElementsByTagName('tr') ;
+
+
+// iterate over each row in the table
+foreach($calltable->getElementsByTagName('tr') as $tr)
+{
+    $tds = $tr->getElementsByTagName('td'); // get the columns in this row
+    if($tds->length >= 2 && !(empty($tds->item(1))))
+    {
+        $callinfo = $tds->item(1)->nodeValue;
+        if (!empty($callinfo)) $call[] = $callinfo; // B            
+    }
+}
+// Future parse multiple calls (i.e. second table) if active calls >=1
+//var_dump($call);
+// 0 - Call 1
+// 1 - Terminal ID
+// 2 - State
+// 3 - Peer Name
+// 4 - Peer Number
+// 5 - Start Time
+// 6 - Duration
+// 7 - Direction
+
+$activecalls = '';
+$callState = $call[2];
+$callerName = $call[3];
+$callerNumber = $call[4];
+$callStart = $call[5];
+$callDuration = $call[6];
+$callDirection = $call[7];
+
+$currentcall = array($callState,$callerName,$callerNumber,$callStart,$callDuration,$callDirection);
+//echo $doc->saveHTML();
+return $currentcall;
 }
