@@ -1,13 +1,28 @@
 <?php
 
-function hangup($item) {
-    error_reporting(E_ALL); 
-ini_set( 'display_errors','1');
 require_once(__DIR__.'/config.php');
 require_once(__DIR__.'/functions.php');
 
-$pagename = 'callstatus.htm';
-$scheme = 'http';
+// return config.php (using file_get_contents or $config)
+if (isset($config['obihost'])) {
+  $host = $config['obihost'];
+  $username = $config['obiusername'];
+  $password = $config['obipassword'];
+  $scheme = $config['scheme'];
+} else {
+$host = '192.168.42.2';
+$username = "admin";
+$password = "admin";
+$scheme = $config['scheme'];
+}
+
+$item = $_GET['item'];
+$value = "Remove";
+$payload = array("item"=>$item,'value'=>$value);
+$pagename = 'callstatus.htm?' . $item;
+$scheme = "http";
+$url = "{$scheme}://{$host}/{$pagename}";
+curl_post($url,$username,$password,$payload);
 
 
 if (isset($config['obihost'])) {

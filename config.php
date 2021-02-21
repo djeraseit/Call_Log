@@ -15,6 +15,7 @@ date_default_timezone_set('America/Chicago');
 
 $config = [];
 $config['numverifykey'] = 'xxx';
+$config['scheme'] = 'http';
 $config['amqpurl'] = 'amqps://rcndzvbo:E-BaZornNc1uuSID1kjuVmzDsj1UrxVY@eagle.rmq.cloudamqp.com/rcndzvbo';
 $config['twiliosid'] = getenv("TWILIO_ACCOUNT_SID"); // use nvram
 $config['twiliotoken'] = getenv("TWILIO_AUTH_TOKEN"); // use nvram

@@ -1,5 +1,41 @@
 <?php
 
+function curl_post($Url,$username = 'admin', $password = 'admin',$payload = array()){
+ 
+  //http_build_query($payload)
+  // Now set some options (most are optional)
+  $options = array(
+    CURLOPT_URL            => $Url,
+    CURLOPT_HEADER         => false,    
+    CURLOPT_VERBOSE        => false,
+    CURLOPT_POST        => true,
+    CURLOPT_POSTFIELDS        => $payload,
+    CURLOPT_RETURNTRANSFER => true,
+    CURLOPT_USERAGENT => 'CallBlocker',
+    CURLOPT_FOLLOWLOCATION => true,
+    CURLOPT_NOPROXY => '*', // do not use proxy
+    CURLOPT_SSL_VERIFYPEER => false,    // for https
+    CURLOPT_USERPWD        => $username . ":" . $password,
+    CURLOPT_HTTPAUTH       => CURLAUTH_DIGEST,
+    CURLOPT_TIMEOUT => 5,
+    CURLOPT_CONNECTTIMEOUT => 5,
+    CURLOPT_REFERER => 'https://www.theodis.com',
+    CURLOPT_TCP_KEEPALIVE => 1, // for callhistoryxml
+    CURLOPT_TCP_KEEPIDLE => 2, // for call historyxml
+);
+ // OK cool - then let's create a new cURL resource handle
+ $ch = curl_init();
+ curl_setopt_array( $ch, $options );
+
+ // Download the given URL, and return output
+ $output = curl_exec($ch);
+
+ // Close the cURL resource, and free system resources
+ curl_close($ch);
+
+ return $output;
+}
+
 function curl_get($Url,$username = 'admin', $password = 'admin'){
  
 
