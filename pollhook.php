@@ -34,6 +34,7 @@ $pbtoken = $config['pushbullet']['token'];
 $youmailKey = $config['youmail']['credentials']['key'];
 $youmailSid = $config['youmail']['credentials']['sid'];
 $callee = $config['general']['phone'];
+$scheme = $config['obihai']['scheme'];
 
 $longOpts = array(
   'poll_freq:',
@@ -75,19 +76,10 @@ $j = 1;
 
 while (true)
 {
+$pagename = "PI_FXS_1_Stats.xml"; // "&time=".time(); //add time to cache
+$url = $scheme . "://" . $obihai_host . "/" . $pagename;
+$output = curl_get($url,$obihai_user, $obihai_pass);
 
-//$url = "http://" . $obihai_host . "/PI_FXS_1_Stats.xml" . "&time=".time(); //add time to cache
-$url = "http://" . $obihai_host . "/PI_FXS_1_Stats.xml"; //add time to cache
-
-$curl = curl_init();
-curl_setopt($curl, CURLOPT_URL, $url);
-curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_ANY);
-//curl_setopt($curl, CURLOPT_FRESH_CONNECT, 1); // maybe not needed. can use headers instead if it does not mess up authentication.
-curl_setopt($curl, CURLOPT_NOPROXY, "*"); // no proxy
-//curl_setopt($curl, CURLOPT_TCP_NODELAY, true); 
-//curl_setopt($curl, CURLOPT_TCP_FASTOPEN, true); // since PHP 7.0.7 
-curl_setopt($curl, CURLOPT_USERPWD, "$obihai_user:$obihai_pass");
 
 $output = curl_exec($curl);
 
