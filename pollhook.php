@@ -87,7 +87,7 @@ $output = curl_get($url, $obihai_user, $obihai_pass);
 
   $states = array();
   $xml = new SimpleXMLElement($output, LIBXML_NOERROR |  LIBXML_ERR_NONE);
- // $xml = simplexml_load_file($output, "SimpleXMLElement", LIBXML_NOERROR |  LIBXML_ERR_NONE); //ignore errors
+
   $parameters = $xml->xpath('//parameter');
   foreach ($parameters as $parameter)
   {
