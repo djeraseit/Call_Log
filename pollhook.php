@@ -137,6 +137,19 @@ $output = curl_exec($curl);
             $youmailpayload = array('callee'=>$callee,'callerId'=>$callername);
             // nested loop
             while($j <= 1){
+              // Check phonebook 
+              $phonebookentry = json_decode(checkPhonebook($callernumber), true);
+              if (!empty($phonebookentry)){
+               // print_r($phonebookentry);
+               $spamRisk = $phonebookentry['spamRisk'];
+              } else {
+                // TODO: Add entry to phonebook
+                $entryresults = addPhonebook($callernumber,$callerinfo);
+                var_dump($entryresults);
+              }
+              if ($spamRisk == 1) {
+                hangup($calleritem);
+              }
               // Lookup spam score and combine array
               try{
                 $youmailresults = youmailLookup($youmailKey,$youmailSid,$callernumber,$youmailpayload);
@@ -147,7 +160,7 @@ $output = curl_exec($curl);
               $youmailinfo = json_decode($youmailresults,true);
               $spamScore = $youmailinfo['spamRisk']['level'];
               // level 2 is strong evidence spammer, level 1 is appears to be spammer
-              if ($spamScore == 1) {
+              if ($spamScore == 1 || $spamRisk == 1) {
                 hangup($calleritem);
               }
                 // Do pushbullet once

@@ -227,13 +227,26 @@ return $output;
 
 }
 
-function addPhonebook ($entry = array()) {
+// TODO: Possibly push onto array then sort out duplicates and/or create seperate update function
+
+function addPhonebook ($phonenumber, $entry = array()) {
   if (!empty($entry)) {
     $phonebook = json_decode(file_get_contents('phone_book.json'), true);
+
+    // TODO: Use foreach loop with array details to add to phonebook any keys and values
+
+    foreach ($entry as $k => $v) {
+      $phonebook[$phonenumber][$k] = $v;
+    }
+    /*
+    if (isset($entry['Name']) || isset($entry['fullname'])) {
     $phonebook[$phonenumber]['Name'] = $entry['fullname'];
-    $phonebook[$phonenumber]['LastCall'] = $entry['lastcalldatetime'];
+    }
+    */
+
+    //$phonebook[$phonenumber]['LastCall'] = $entry['lastcalldatetime'];
     
-    file_put_contents('phone_book.json',json_encode($phonebook), FILE_APPEND | LOCK_EX); // append?
+    file_put_contents('phone_book.json',json_encode($phonebook), LOCK_EX); // probably need not append since we read the entire phonebook into memory
     }
     return true;
 }
@@ -243,13 +256,14 @@ function checkPhonebook($phonenumber) {
     $phonebook = json_decode(file_get_contents('phone_book.json'), true);
     if (array_key_exists($phonenumber, $phonebook)) {
     $fullname = $phonebook[$phonenumber]['Name'];
-    $lastcalldatetime = $phonebook[$phonenumber]['LastCall'];
+    //$lastcalldatetime = $phonebook[$phonenumber]['LastCall'];
+    $spamRisk = $phonebook[$phonenumber]['spamRisk'];
     } else {
       $contact = null;
     }
-    $contact = array($fullname,$lastcalldatetime);
+    $contact = array('Name'=>$fullname,'spamRisk'=>$spamRisk);
   }
-    return $contact;
+    return json_encode($contact);
 }
 
 function getCallerAndLookup($host, $username, $password, $state = "Ringing") {
