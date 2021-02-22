@@ -143,8 +143,8 @@ $output = curl_exec($curl);
                // print_r($phonebookentry);
                $spamRisk = $phonebookentry['spamRisk'];
               } else {
-                // TODO: Add entry to phonebook
-                $entryresults = addPhonebook($callernumber,$callerinfo);
+                $phonebookdata = array('Name'=>$callername);
+                $entryresults = addPhonebook($callernumber,$phonebookdata);
                 var_dump($entryresults);
               }
               if ($spamRisk == 1) {
