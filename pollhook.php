@@ -25,13 +25,16 @@
 * along with this program.  If not, see https://www.gnu.org/licenses/gpl-3.0.en.html.
 */
 
-
 //php pollhook.php --obihai_host 192.168.42.2 --obihai_user admin --obihai_pass megalith
 
 $config = require_once(__DIR__.'/config.php');
 require_once(__DIR__.'/functions.php');
 
 $pbtoken = $config['pushbullet']['token'];
+$youmailKey = $config['youmail']['credentials']['key'];
+$youmailSid = $config['youmail']['credentials']['sid'];
+$callee = $config['general']['phone'];
+
 $longOpts = array(
   'poll_freq:',
   'obihai_host:',
@@ -53,7 +56,6 @@ $obihai_host = $options['obihai_host'];
 $obihai_user = (isset($options['obihai_user']) ? $options['obihai_user'] : 'admin');
 $obihai_pass = (isset($options['obihai_pass']) ? $options['obihai_pass'] : 'admin');
 
-
 /*
 $config = array(
   'indent' => true,
@@ -68,6 +70,9 @@ $xml = $tidy->repairfile($badXML, $config);
 echo $xml;
 */
 //$searchPage = mb_convert_encoding($htmlUTF8Page, 'HTML-ENTITIES', "UTF-8"); 
+
+$j = 1;
+
 while (true)
 {
 
@@ -103,8 +108,11 @@ $output = curl_exec($curl);
   
   $callerinfo = "";
   $pushbullet = "";
+  $pbsent = true;
 
     $i = 1;
+    
+
     foreach ($states as $state)
     {
       // TODO: need to do something like call block when Ringing, and when Off Hook start recording, when On Hook, get last caller, etc
@@ -114,6 +122,7 @@ $output = curl_exec($curl);
           } catch (Exception $e) {
             echo $e->getMessage();
           }
+
           if (isset($callerinfo['Number'])) {
             $callername = $callerinfo['Name'];
             $callernumber = $callerinfo['Number'];
@@ -125,20 +134,48 @@ $output = curl_exec($curl);
             // TODO: Get SPAM score if Direction is Inbound
             // TODO: Add to address book if not already listed
             $payload = array('body'=>$callerformatted,'title'=>'INCOMING CALL','type'=>'note');
-            try {
-            $pushbullet = pb_alert($pbtoken, $payload);
-            } catch (Exception $e){
-              echo $e->getMessage();
+            $youmailpayload = array('callee'=>$callee,'callerId'=>$callername);
+            // nested loop
+            while($j <= 1){
+              // Lookup spam score and combine array
+              try{
+                $youmailresults = youmailLookup($youmailKey,$youmailSid,$callernumber,$youmailpayload);
+              } catch(Exception $e) {
+                echo $e->getMessage();
+              }
+              
+              $youmailinfo = json_decode($youmailresults,true);
+              $spamScore = $youmailinfo['spamRisk']['level'];
+              // level 2 is strong evidence spammer, level 1 is appears to be spammer
+              if ($spamScore == 1) {
+                hangup($calleritem);
+              }
+                // Do pushbullet once
+              try {
+                    $pushbullet = pb_alert($pbtoken, $payload);
+                    $pbsent = false;
+               } catch (Exception $e){
+                    echo $e->getMessage();
+              }
+            
+              $pbresult = json_decode($pushbullet,true);
+                if ($pbresult['active'] == true && !empty($callernumber)){
+                  
+                  echo "PUSHBULLET SENT!";
+                } 
+                $j++;
             }
-            echo $pushbullet; 
+            // end nested loop
+      
           }
-          echo $pushbullet; 
+          // Part of outer loop   
+         
+          // end part of outer loop      
         }
               echo $state . ' ' . $i . PHP_EOL; // On Hook, Ringing, Off Hook
-              print_r($callerinfo);   
-              echo $pushbullet;   
+              //print_r($callerinfo);   
+             // echo $pushbullet;   
       $i++;
     }    
-
   sleep($poll_freq);
 }

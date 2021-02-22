@@ -161,7 +161,6 @@ function pb_alert($pbtoken = null,$payload = array()) {
   if ($status_code != 200)
       throw new Exception("Response with Status Code [" . $status_code . "].", 500);
 
-
  if ($ch != null) curl_close($ch);
 
  return $output;
