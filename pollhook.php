@@ -31,6 +31,7 @@
 $config = require_once(__DIR__.'/config.php');
 require_once(__DIR__.'/functions.php');
 
+$pbtoken = $config['pushbullet']['token'];
 $longOpts = array(
   'poll_freq:',
   'obihai_host:',
@@ -101,25 +102,41 @@ $output = curl_exec($curl);
   }
   
   $callerinfo = "";
-
+  $pushbullet = "";
 
     $i = 1;
     foreach ($states as $state)
     {
       // TODO: need to do something like call block when Ringing, and when Off Hook start recording, when On Hook, get last caller, etc
         if ($state == 'Ringing') {
+          try {
             $callerinfo = json_decode(getCallerAndLookup($obihai_host, $obihai_user, $obihai_pass, $state),true);
+          } catch (Exception $e) {
+            echo $e->getMessage();
+          }
+          if (isset($callerinfo['Number'])) {
             $callername = $callerinfo['Name'];
             $callernumber = $callerinfo['Number'];
             $callerstart = $callerinfo['StartTime'];
             $callerdirection = $callerinfo['Direction'];
             $calleritem = $callerinfo['Item'];
+            $callerformatted = $callername . ' - ' . $callernumber; 
             //$hangup = hangup($calleritem);
             // TODO: Get SPAM score if Direction is Inbound
             // TODO: Add to address book if not already listed
+            $payload = array('body'=>$callerformatted,'title'=>'INCOMING CALL','type'=>'note');
+            try {
+            $pushbullet = pb_alert($pbtoken, $payload);
+            } catch (Exception $e){
+              echo $e->getMessage();
+            }
+            echo $pushbullet; 
+          }
+          echo $pushbullet; 
         }
               echo $state . ' ' . $i . PHP_EOL; // On Hook, Ringing, Off Hook
-              echo $callerinfo;      
+              print_r($callerinfo);   
+              echo $pushbullet;   
       $i++;
     }    
 

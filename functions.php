@@ -142,7 +142,7 @@ function pb_alert($pbtoken = null,$payload = array()) {
     CURLOPT_USERAGENT => 'CallBlocker',
     CURLOPT_FOLLOWLOCATION => true,
     //CURLOPT_NOPROXY => '*', // do not use proxy
-    CURLOPT_SSL_VERIFYPEER => false,    // for https
+    CURLOPT_SSL_VERIFYPEER => true,    // for https
     CURLOPT_TIMEOUT => 5,
     CURLOPT_CONNECTTIMEOUT => 5,
     CURLOPT_REFERER => 'https://www.theodis.com'
@@ -150,6 +150,8 @@ function pb_alert($pbtoken = null,$payload = array()) {
 
  $ch = curl_init();
  curl_setopt_array( $ch, $options );
+ $output = curl_exec($ch);
+
 
   // validate CURL status
   if(curl_errno($ch))
@@ -159,7 +161,6 @@ function pb_alert($pbtoken = null,$payload = array()) {
   if ($status_code != 200)
       throw new Exception("Response with Status Code [" . $status_code . "].", 500);
 
- $output = curl_exec($ch);
 
  if ($ch != null) curl_close($ch);
 
