@@ -68,7 +68,8 @@ return [
     'obihai' => [
         'credentials' => [
             'username' => 'admin',
-            'password' => 'megalith'
+            'password' => 'megalith',
+            'poll_freq' => 2
         ],
         'host' => '192.168.42.2',
         'scheme' => 'http'

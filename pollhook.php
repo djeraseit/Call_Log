@@ -51,11 +51,11 @@ if (!isset($options['obihai_host']))
   exit(1);
 }
 
-$poll_freq = (isset($options['poll_freq']) ? $options['poll_freq'] : 1);
+$poll_freq = (isset($options['poll_freq']) ? $options['poll_freq'] : $config['obiahi']['poll_freq']);
 
 $obihai_host = $options['obihai_host'];
-$obihai_user = (isset($options['obihai_user']) ? $options['obihai_user'] : 'admin');
-$obihai_pass = (isset($options['obihai_pass']) ? $options['obihai_pass'] : 'admin');
+$obihai_user = (isset($options['obihai_user']) ? $options['obihai_user'] : $config['obiahi']['username']);
+$obihai_pass = (isset($options['obihai_pass']) ? $options['obihai_pass'] : $config['obihai']['password']);
 
 /*
 $config = array(
@@ -78,10 +78,12 @@ while (true)
 {
 $pagename = "PI_FXS_1_Stats.xml"; // "&time=".time(); //add time to cache
 $url = $scheme . "://" . $obihai_host . "/" . $pagename;
-$output = curl_get($url,$obihai_user, $obihai_pass);
+try {
+$output = curl_get($url, $obihai_user, $obihai_pass);
+} catch (Exception $e) {
+  echo $e->getMessage();
+}
 
-
-$output = curl_exec($curl);
 
   $states = array();
   $xml = new SimpleXMLElement($output, LIBXML_NOERROR |  LIBXML_ERR_NONE);
