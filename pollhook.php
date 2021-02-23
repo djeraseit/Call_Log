@@ -184,7 +184,7 @@ $states = array();
                   //$phonebookupdates = array_merge($phonebookdata,array('spamRisk'=>$spamRisk));
                 }
               // This is part of the checkPhonebook function (add all info to phonebook last)
-              $entryresults = addPhonebook($callernumber,$phonebookupdates);
+              $entryresults = addPhonebook($callernumber,$phonebookdata);
               // This will
               var_dump($entryresults);
                 $j++;
