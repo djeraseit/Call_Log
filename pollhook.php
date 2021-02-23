@@ -72,6 +72,8 @@ echo $xml;
 */
 //$searchPage = mb_convert_encoding($htmlUTF8Page, 'HTML-ENTITIES', "UTF-8"); 
 
+// 2 is phone line from telco (FXS); 1 is from obihai to phone (FXO) 
+
 $j = 1;
 
 while (true)
@@ -85,7 +87,7 @@ $output = curl_get($url, $obihai_user, $obihai_pass);
 }
 
 
-  $states = array();
+$states = array();
   try {
   $xml = new SimpleXMLElement($output, LIBXML_NOERROR |  LIBXML_ERR_NONE);
 } catch (Exception $e){
@@ -115,7 +117,8 @@ $output = curl_get($url, $obihai_user, $obihai_pass);
     {
       // TODO: need to do something like call block when Ringing, and when Off Hook start recording, when On Hook, get last caller, etc
         if ($state == 'Ringing') {
-          sleep(1); //sleep for a second to give time for the caller information to show up.
+          sleep(1); //sleep for a second to give time for the caller information to show up. (or check appropriate line that is ringing)
+          // NOTE: if line 2 is ringing and Line 1 is not ringing then the Obihai has dropped the call internally based on dial plan
           try {
             $callerinfo = json_decode(getCallerAndLookup($obihai_host, $obihai_user, $obihai_pass, $state),true);
           } catch (Exception $e) {
