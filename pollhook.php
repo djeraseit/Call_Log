@@ -86,7 +86,6 @@ $output = curl_get($url, $obihai_user, $obihai_pass);
   echo $e->getMessage();
 }
 
-
 $states = array();
   try {
   $xml = new SimpleXMLElement($output, LIBXML_NOERROR |  LIBXML_ERR_NONE);
@@ -133,8 +132,8 @@ $states = array();
             $calleritem = $callerinfo['Item'];
             $callerformatted = $callername . ' - ' . $callernumber; 
             //$hangup = hangup($calleritem);
-            // TODO: Get SPAM score if Direction is Inbound
-            // TODO: Add to address book if not already listed
+            // TODO: Get SPAM score if Direction is Inbound and phonebook spamscore is null
+           
             $payload = array('body'=>$callerformatted,'title'=>'INCOMING CALL','type'=>'note');
             $youmailpayload = array('callee'=>$callee,'callerId'=>$callername);
             // nested loop
@@ -146,21 +145,22 @@ $states = array();
                $spamRisk = $phonebookentry[$callernumber]['spamRisk'];
               } else {
                 $phonebookdata = array('Name'=>$callername);
-                $entryresults = addPhonebook($callernumber,$phonebookdata);
-                var_dump($entryresults);
               }
+
               if ($spamRisk == 1) {
                 hangup($calleritem);
-              }
+              } elseif($spamRisk == null){
+
               // Lookup spam score and combine array
               try{
                 $youmailresults = youmailLookup($youmailKey,$youmailSid,$callernumber,$youmailpayload);
+                $youmailinfo = json_decode($youmailresults,true);
+                $spamScore = $youmailinfo['spamRisk']['level'];
               } catch(Exception $e) {
                 echo $e->getMessage();
-              }
+              }             
+            } // end elseif
               
-              $youmailinfo = json_decode($youmailresults,true);
-              $spamScore = $youmailinfo['spamRisk']['level'];
               // level 2 is strong evidence spammer, level 1 is appears to be spammer
               if ($spamScore == 1 || $spamRisk == 1) {
                 hangup($calleritem);
@@ -175,9 +175,18 @@ $states = array();
             
               $pbresult = json_decode($pushbullet,true);
                 if ($pbresult['active'] == true && !empty($callernumber)){
-                  
                   echo "PUSHBULLET SENT!";
                 } 
+              // TODO: Consolidate spamScore and spamRisk to a final score
+                if (isset($spamScore) || isset($spamRisk)){
+                  // push spamRisk onto array
+                  $phonebookdata['spamRisk'] = $spamRisk;
+                  //$phonebookupdates = array_merge($phonebookdata,array('spamRisk'=>$spamRisk));
+                }
+              // This is part of the checkPhonebook function (add all info to phonebook last)
+              $entryresults = addPhonebook($callernumber,$phonebookupdates);
+              // This will
+              var_dump($entryresults);
                 $j++;
             }
             // end nested loop
