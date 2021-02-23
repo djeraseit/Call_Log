@@ -115,6 +115,7 @@ $output = curl_get($url, $obihai_user, $obihai_pass);
     {
       // TODO: need to do something like call block when Ringing, and when Off Hook start recording, when On Hook, get last caller, etc
         if ($state == 'Ringing') {
+          sleep(1); //sleep for a second to give time for the caller information to show up.
           try {
             $callerinfo = json_decode(getCallerAndLookup($obihai_host, $obihai_user, $obihai_pass, $state),true);
           } catch (Exception $e) {
