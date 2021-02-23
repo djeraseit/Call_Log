@@ -1,3 +1,7 @@
 config.php
 phone_book.json
 phone_history.json
+whitelist_names.json
+whitelist_numbers.json
+blacklist_names.json
+blacklist_numbers.json

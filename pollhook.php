@@ -54,8 +54,8 @@ if (!isset($options['obihai_host']))
 $poll_freq = (isset($options['poll_freq']) ? $options['poll_freq'] : $config['obihai']['poll_freq']);
 
 $obihai_host = $options['obihai_host'];
-$obihai_user = (isset($options['obihai_user']) ? $options['obihai_user'] : $config['obiahi']['username']);
-$obihai_pass = (isset($options['obihai_pass']) ? $options['obihai_pass'] : $config['obihai']['password']);
+$obihai_user = (isset($options['obihai_user']) ? $options['obihai_user'] : $config['obiahi']['credentials']['username']);
+$obihai_pass = (isset($options['obihai_pass']) ? $options['obihai_pass'] : $config['obihai']['credentials']['password']);
 
 /*
 $config = array(
@@ -86,7 +86,11 @@ $output = curl_get($url, $obihai_user, $obihai_pass);
 
 
   $states = array();
+  try {
   $xml = new SimpleXMLElement($output, LIBXML_NOERROR |  LIBXML_ERR_NONE);
+} catch (Exception $e){
+  echo $e->getMessage();
+}
 
   $parameters = $xml->xpath('//parameter');
   foreach ($parameters as $parameter)
