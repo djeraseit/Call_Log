@@ -5,3 +5,5 @@ whitelist_names.json
 whitelist_numbers.json
 blacklist_names.json
 blacklist_numbers.json
+callstatus-example.txt
+callstatus-example2.txt

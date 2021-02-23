@@ -257,9 +257,9 @@ function checkPhonebook($phonenumber,$fullname = null) {
     if (array_key_exists($phonenumber, $phonebook)) {
     $fullname = $phonebook[$phonenumber]['Name'];
     //$lastcalldatetime = $phonebook[$phonenumber]['LastCall'];
-    $spamRisk = $phonebook[$phonenumber]['spamRisk'];
+    $spamRisk = (isset($phonebook[$phonenumber]['spamRisk']) ? $phonebook[$phonenumber]['spamRisk'] : null);
     } else {
-      $contact = array($phonenumber => array('Name'=>$fullname));
+      $contact = array($phonenumber => array('Name'=>$fullname,'spamRisk'=>null));
     }
     $contact = array($phonenumber => array('Name'=>$fullname,'spamRisk'=>$spamRisk));
   }
