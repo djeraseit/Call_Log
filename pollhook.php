@@ -51,7 +51,7 @@ if (!isset($options['obihai_host']))
   exit(1);
 }
 
-$poll_freq = (isset($options['poll_freq']) ? $options['poll_freq'] : $config['obiahi']['poll_freq']);
+$poll_freq = (isset($options['poll_freq']) ? $options['poll_freq'] : $config['obihai']['poll_freq']);
 
 $obihai_host = $options['obihai_host'];
 $obihai_user = (isset($options['obihai_user']) ? $options['obihai_user'] : $config['obiahi']['username']);
