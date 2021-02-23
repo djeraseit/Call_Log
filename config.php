@@ -72,7 +72,7 @@ return [
         ],
         'host' => '192.168.42.2',
         'scheme' => 'http',
-        'poll_freq' => 2
+        'poll_freq' => 1
     ],
     'numverify' => [
         'accessKey' => 'xxx',
