@@ -655,7 +655,7 @@ try {
   //  $raw_response = file_get_contents('callstatus-example2.txt');
 
   if (!empty($raw_response)) {
-$results = parseCurrentCaller($raw_response);
+    $results = parseCurrentCaller($raw_response);
   }
   return $results;
 }
