@@ -637,7 +637,7 @@ if (isset($config['obihai']['host'])) {
   $password = $config['obihai']['credentials']['password'];
   $scheme = $config['obihai']['scheme'];
 } else {
-  die('Please configure the software.');
+  throw new Exception("Software must be configured first.");
 }
 
 $url = "{$scheme}://{$host}/{$pagename}";
