@@ -132,7 +132,7 @@ $output = curl_get($url, $obihai_user, $obihai_pass);
             // nested loop
             while($j <= 1){
               // Check phonebook 
-              $phonebookentry = json_decode(checkPhonebook($callernumber), true);
+              $phonebookentry = json_decode(checkPhonebook($callernumber, $callername), true);
               if (!empty($phonebookentry)){
                // print_r($phonebookentry);
                $spamRisk = $phonebookentry['spamRisk'];

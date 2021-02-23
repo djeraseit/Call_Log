@@ -34,3 +34,4 @@ Call_Log ver 3.2 TODO
 26. Just poll current caller instead of hook status (NOTE: OFF HOOK happens first)
 27. Performance: "No current callers" needs to be while loop until there are current caller
 28. Send Email (Mailgun)
+29. Encrypt Pushbullet

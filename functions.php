@@ -251,7 +251,7 @@ function addPhonebook ($phonenumber, $entry = array()) {
     return $entry;
 }
 
-function checkPhonebook($phonenumber) {
+function checkPhonebook($phonenumber,$fullname = null) {
   if (!empty($phonenumber)) {
     $phonebook = json_decode(file_get_contents('phone_book.json'), true);
     if (array_key_exists($phonenumber, $phonebook)) {
@@ -259,9 +259,9 @@ function checkPhonebook($phonenumber) {
     //$lastcalldatetime = $phonebook[$phonenumber]['LastCall'];
     $spamRisk = $phonebook[$phonenumber]['spamRisk'];
     } else {
-      $contact = null;
+      $contact = array($phonenumber => array('Name'=>$fullname));
     }
-    $contact = array('Name'=>$fullname,'spamRisk'=>$spamRisk);
+    $contact = array($phonenumber => array('Name'=>$fullname,'spamRisk'=>$spamRisk));
   }
     return json_encode($contact);
 }
