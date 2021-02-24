@@ -679,35 +679,81 @@ function cloudflareKV($kvinfo = array(),$action,$kvdetails = null){
     die('Cloudflare not configured.');
   }
 
+  $options = array(
+    CURLOPT_HEADER         => false,    
+    CURLOPT_VERBOSE        => false,
+    CURLOPT_RETURNTRANSFER => true,
+    CURLOPT_USERAGENT => 'CallBlocker',
+    CURLOPT_FOLLOWLOCATION => true,
+    //CURLOPT_NOPROXY => '*', // do not use proxy
+    CURLOPT_SSL_VERIFYPEER => true,    // for https
+    CURLOPT_TIMEOUT => 5,
+    CURLOPT_CONNECTTIMEOUT => 5,
+    CURLOPT_REFERER => 'https://www.theodis.com'
+);
   switch ($action){
     case "verify":
       // build variables for verification
       $headers = array("Authorization: Bearer {$authkey}","Content-Type: application/json");
-      $url = "https://api.cloudflare.com/client/v4/user/tokens/verify";
+      $curlOptions = array('CURLOPT_URL'=>"https://api.cloudflare.com/client/v4/user/tokens/verify");
+      $options = array_merge($options, $curlOptions);
       $method = "GET";
     break;
     case "read":
       //build variables for curl
       $headers = array("Authorization: Bearer {$authkey}");
-      $url = "https://api.cloudflare.com/client/v4/accounts/{$accountid}/storage/kv/namespaces/5da70ac7fe364717992072cbbb66196c/values/{$key}";
+      $curlOptions = array('CURLOPT_URL'=>"https://api.cloudflare.com/client/v4/accounts/{$accountid}/storage/kv/namespaces/{$namespaceid}/values/{$key}");
+      $options = array_merge($options, $curlOptions);
       $method = "GET";
     break;
     case "create-single":
       //build variables for curl
       $headers = array("Authorization: Bearer {$authkey}","Content-Type: text/plain");
+      $curlOptions = array('CURLOPT_POSTFIELDS'=>$data,'CURLOPT_CUSTOMREQUEST'=>"PUT","CURLOPT_URL"=>"https://api.cloudflare.com/client/v4/accounts/{$accountid}/storage/kv/namespaces/{$namespaceid}/values/{$key}");
+      $options = array_merge($options, $curlOptions);
       $method = "PUT";
     break;
     case "delete":
       //build variables for curl
       $headers = array("Authorization: Bearer {$authkey}");
-      $url = "https://api.cloudflare.com/client/v4/accounts/{$accountid}/storage/kv/namespaces/5da70ac7fe364717992072cbbb66196c/values/{$key}";
+      $curlOptions = array('CURLOPT_CUSTOMREQUEST'=>'DELETE','CURLOPT_URL'=>"https://api.cloudflare.com/client/v4/accounts/{$accountid}/storage/kv/namespaces/{$namespaceid}/values/{$key}");
+      $options = array_merge($options, $curlOptions);
       $method = "DELETE";
     break;
     default:
       // verification
       $headers = array("Authorization: Bearer {$authkey}","Content-Type: application/json");
-      $url = "https://api.cloudflare.com/client/v4/user/tokens/verify";
+      $curlOptions = array('CURLOPT_URL'=>"https://api.cloudflare.com/client/v4/user/tokens/verify");
+      $options = array_merge($options, $curlOptions);
       $method = "GET";
   }
+  //curl_setopt($ch, CURLOPT_PROXY, "proxy.YOURSITE.com");
+//curl_setopt($ch, CURLOPT_PROXYPORT, 8080);
+//curl_setopt ($ch, CURLOPT_PROXYUSERPWD, "username:password"); 
+
+$ch = curl_init();
+curl_setopt_array( $ch, $options );
+
+// need to catch error code 401 which is bad username and/or password
+try {
+  $output  = curl_exec( $ch );
+
+  // validate CURL status
+  if(curl_errno($ch))
+      throw new Exception(curl_error($ch), 500);
+
+  // validate HTTP status code (user/password credential issues)
+  $status_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+  if ($status_code != 200)
+      throw new Exception("Response with Status Code [" . $status_code . "].", 500);
+
+} catch(Exception $ex) {
+    if ($ch != null) curl_close($ch);
+    throw new Exception($ex);
+}
+
+if ($ch != null) curl_close($ch);
+
+return $output;
 
 }
