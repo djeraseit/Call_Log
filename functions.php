@@ -258,10 +258,11 @@ function checkPhonebook($phonenumber,$fullname = null) {
     $fullname = $phonebook[$phonenumber]['Name'];
     //$lastcalldatetime = $phonebook[$phonenumber]['LastCall'];
     $spamRisk = (isset($phonebook[$phonenumber]['spamRisk']) ? $phonebook[$phonenumber]['spamRisk'] : null);
-    } else {
+    } elseif (!array_key_exists($phonenumber, $phonebook)) {
       $contact = array($phonenumber => array('Name'=>$fullname,'spamRisk'=>null));
-    }
+    } else{
     $contact = array($phonenumber => array('Name'=>$fullname,'spamRisk'=>$spamRisk));
+    }
   }
     return json_encode($contact);
 }

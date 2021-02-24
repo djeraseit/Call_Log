@@ -84,10 +84,17 @@ return [
         'phone' => '7136331642',
         'phonebook' => 'phone_book.json',
         'phonehistory' => 'phone_history.json',
+        'whitelistnumbers' => 'whitelist_numbers.json',
+        'whitelistnames' => 'whitelist_names.json',
+        'blacklistnumbers' => 'blacklist_numbers.json',
+        'blacklistnames' => 'blacklist_names.json',
         'licensecode' => 'demo',
-        'proxyhost' => '',
-        'proxyport' => '',
-        'proxyusername' => '',
-        'proxypassword' => ''
-    ]
+        'proxy'=>
+			[
+			'enabled' => 0,
+			'proxyhost' => '',
+			'proxyport' => '',
+			'proxyusername' => '',
+			'proxypassword' => '']
+			]
 ];
