@@ -140,7 +140,7 @@ $states = array();
             while($j <= 1){
               // Check phonebook 
               $phonebookentry = json_decode(checkPhonebook($callernumber, $callername), true);
-              if (!empty($phonebookentry) && !empty($phonebookentry[$callernumber]['spamRisk'])){
+              if (!empty($phonebookentry) && isset($phonebookentry[$callernumber]['spamRisk'])){
                // print_r($phonebookentry);
                $spamRisk = $phonebookentry[$callernumber]['spamRisk'];
               } else {

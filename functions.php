@@ -272,7 +272,7 @@ function checkPhonebook($phonenumber,$fullname = null) {
     //$phonebook['phonenumber'][] = $contact;
     file_put_contents('phone_book.json',json_encode($phonebook), LOCK_EX); // probably need not append since we read the entire phonebook into memory
 
-  }
+  
     return json_encode($contact);
 }
 
