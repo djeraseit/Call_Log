@@ -149,7 +149,7 @@ $states = array();
 
               if ($spamRisk == 1) {
                 hangup($calleritem);
-              } elseif($spamRisk == null){
+              } elseif($spamRisk == null || !isset($spamRisk)){
 
               // Lookup spam score and combine array
               try{
