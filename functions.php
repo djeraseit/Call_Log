@@ -261,8 +261,14 @@ function checkPhonebook($phonenumber,$fullname = null) {
     } elseif (!array_key_exists($phonenumber, $phonebook)) {
       $contact = array($phonenumber => array('Name'=>$fullname,'spamRisk'=>null));
     } else{
-    $contact = array($phonenumber => array('Name'=>$fullname,'spamRisk'=>$spamRisk));
+      $contact = array($phonenumber => array('Name'=>$fullname,'spamRisk'=>$spamRisk));
     }
+    // TODO: Write back to phonebook possibly using array_merge (does not preserve keys/phonenumbers due to renumbering) / array_push
+    
+    //$phonebook = array_merge($phonebook,$contact);
+    //$phonebook['phonenumber'][] = $contact;
+    file_put_contents('phone_book.json',json_encode($phonebook), LOCK_EX); // probably need not append since we read the entire phonebook into memory
+
   }
     return json_encode($contact);
 }
