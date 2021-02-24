@@ -667,7 +667,7 @@ try {
   return $results;
 }
 
-function cloudflareKV($kvinfo = array(),$action,$kvdetails = null){
+function cloudflareKV($kvinfo = array(),$action = "verify",$kvdetails = null){
   $config = require __DIR__.'/config.php';
 
   if (isset($config['cloudflare']['accountid'])) {
