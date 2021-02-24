@@ -666,3 +666,48 @@ try {
   }
   return $results;
 }
+
+function cloudflareKV($kvinfo = array(),$action,$kvdetails = null){
+  $config = require __DIR__.'/config.php';
+
+  if (isset($config['cloudflare']['accountid'])) {
+    $accountid = $config['cloudflare']['accountid'];
+    $namespaceid = $config['cloudflare']['namespaceid'];
+    $authkey = $config['cloudflare']['authkey'];
+  
+  } else {
+    die('Cloudflare not configured.');
+  }
+
+  switch ($action){
+    case "verify":
+      // build variables for verification
+      $headers = array("Authorization: Bearer {$authkey}","Content-Type: application/json");
+      $url = "https://api.cloudflare.com/client/v4/user/tokens/verify";
+      $method = "GET";
+    break;
+    case "read":
+      //build variables for curl
+      $headers = array("Authorization: Bearer {$authkey}");
+      $url = "https://api.cloudflare.com/client/v4/accounts/{$accountid}/storage/kv/namespaces/5da70ac7fe364717992072cbbb66196c/values/{$key}";
+      $method = "GET";
+    break;
+    case "create-single":
+      //build variables for curl
+      $headers = array("Authorization: Bearer {$authkey}","Content-Type: text/plain");
+      $method = "PUT";
+    break;
+    case "delete":
+      //build variables for curl
+      $headers = array("Authorization: Bearer {$authkey}");
+      $url = "https://api.cloudflare.com/client/v4/accounts/{$accountid}/storage/kv/namespaces/5da70ac7fe364717992072cbbb66196c/values/{$key}";
+      $method = "DELETE";
+    break;
+    default:
+      // verification
+      $headers = array("Authorization: Bearer {$authkey}","Content-Type: application/json");
+      $url = "https://api.cloudflare.com/client/v4/user/tokens/verify";
+      $method = "GET";
+  }
+
+}

@@ -80,6 +80,13 @@ return [
     'pushbullet' => [
         'token' => 'o.mjCLA2hY2n5jVnwGwHrIDO76KccJtIbl',
     ],
+    'cloudflare' => [
+        'accountid' => 'aca4b736fda75cdcc7597a422139a8f5',
+        'authemail' => 'theodis@megalithtechnologies.com',
+        'authkey' => 'sFtw3RFOLZsY5GXPNKLrsFa8fNHmf2N1Z7yCnWvN',
+        'namespace' => 'obihai',
+        'namespaceid' => '5da70ac7fe364717992072cbbb66196c'
+    ],
     'general' => [
         'phone' => '7136331642',
         'phonebook' => 'phone_book.json',
