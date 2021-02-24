@@ -25,22 +25,42 @@
 * along with this program.  If not, see https://www.gnu.org/licenses/gpl-3.0.en.html.
 */
 
-require_once(__DIR__.'/config.php');
+$config = require __DIR__.'/config.php';
+require_once(__DIR__.'/functions.php');
+
+
+if (isset($config['obihai']['host'])) {
+    $host = $config['obihai']['host'];
+    $username = $config['obihai']['credentials']['username'];
+    $password = $config['obihai']['credentials']['password'];
+    $scheme = $config['obihai']['scheme'];
+  } else {
+ die('Software must be configured.');
+ }
+ 
+
+$pagename = 'callhistory.htm';
+
 
 $opencnam = 'https://api.opencnam.com/v2/phone/+155555555';
-$host = 'obi110'; //hostname or IP
-$pagename = 'callhistory.htm';
+
 $item = null;
 $pagenum = 0;
-$scheme = 'http';
-$url = "{$scheme}://{$host}/{$pagename}?{$pagenum}";
-$username = "admin";
-$password = "admin";
 
-$options = array(
+
+
+$ch = curl_init();
+
+curl_setopt_array( $ch, $options );
+for ($pagenum = 0; $pagenum <=3; $pagenum) {
+    
+    $url = "{$scheme}://{$host}/{$pagename}?{$pagenum}";
+
+
+    $options = array(
         CURLOPT_URL            => $url,
-        CURLOPT_HEADER         => true,    
-        CURLOPT_VERBOSE        => true,
+        CURLOPT_HEADER         => false,    
+        CURLOPT_VERBOSE        => false,
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_FOLLOWLOCATION => true,
         CURLOPT_NOPROXY => '*', // do not use proxy
@@ -48,10 +68,8 @@ $options = array(
         CURLOPT_USERPWD        => $username . ":" . $password,
         CURLOPT_HTTPAUTH       => CURLAUTH_DIGEST
 );
-
-$ch = curl_init();
-
-curl_setopt_array( $ch, $options );
+    
+    echo "The page number is $pagenum" . PHP_EOL;
 
 // need to catch error code 401 which is bad username and/or password
 try {
@@ -74,5 +92,5 @@ try {
 if ($ch != null) curl_close($ch);
 
 echo $raw_response;
-
+} 
 

@@ -252,8 +252,9 @@ function addPhonebook ($phonenumber, $entry = array()) {
 }
 
 function checkPhonebook($phonenumber,$fullname = null) {
-  if (!empty($phonenumber)) {
+  
     $phonebook = json_decode(file_get_contents('phone_book.json'), true);
+
     if (array_key_exists($phonenumber, $phonebook)) {
     $fullname = $phonebook[$phonenumber]['Name'];
     //$lastcalldatetime = $phonebook[$phonenumber]['LastCall'];
@@ -262,7 +263,9 @@ function checkPhonebook($phonenumber,$fullname = null) {
       $contact = array($phonenumber => array('Name'=>$fullname,'spamRisk'=>null));
     } else{
       $contact = array($phonenumber => array('Name'=>$fullname,'spamRisk'=>$spamRisk));
-    }
+    } 
+      $contact = array($phonenumber=> array('Name'=>$fullname,'spamRisk'=>$spamRisk));
+    
     // TODO: Write back to phonebook possibly using array_merge (does not preserve keys/phonenumbers due to renumbering) / array_push
     
     //$phonebook = array_merge($phonebook,$contact);

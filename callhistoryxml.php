@@ -35,10 +35,7 @@ if (isset($config['obihai']['host'])) {
    $password = $config['obihai']['credentials']['password'];
    $scheme = $config['obihai']['scheme'];
  } else {
- $host = '192.168.42.2';
- $username = "admin";
- $password = "admin";
- $scheme = "http";
+die('Software must be configured.');
 }
 
 $pagename = 'callhistory.xml';
