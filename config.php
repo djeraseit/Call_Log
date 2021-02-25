@@ -44,7 +44,8 @@ return [
             'accountid' => '',
         ],
         'sid' => 'AC8bc5ced8f2c87c57ba2313501fb82b52', // use nvram
-        'token' => 'cfe277e84656b6aee186301b062cfd03' // getenv("TWILIO_AUTH_TOKEN") or use nvram
+        'token' => '3b7ac9634a1470f883c9c4e290ab3eae', // getenv("TWILIO_AUTH_TOKEN") or use nvram
+        'apikey' => ''
     ],
     'cloudamqp' => [
         'credentials' => [

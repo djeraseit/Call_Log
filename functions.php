@@ -583,6 +583,7 @@ function twilioNomorobo($sid, $authToken, $callee = '+17136331642', $phonenumber
 
  $ch = curl_init();
  curl_setopt_array( $ch, $options );
+ $output = curl_exec($ch);
 
  //curl_setopt($ch, CURLOPT_PROXY, "proxy.YOURSITE.com");
  //curl_setopt($ch, CURLOPT_PROXYPORT, 8080);
@@ -594,9 +595,9 @@ function twilioNomorobo($sid, $authToken, $callee = '+17136331642', $phonenumber
   // validate HTTP status code (user/password credential issues)
   $status_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
   if ($status_code != 200)
-      throw new Exception("Response with Status Code [" . $status_code . "].", 500);
+      throw new Exception("Response with Status Code [" . $status_code . "]." . $output, 500);
 
- $output = curl_exec($ch);
+
 
  curl_close($ch);
 
