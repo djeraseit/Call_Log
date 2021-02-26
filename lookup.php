@@ -34,15 +34,19 @@ if (isset($config['obihai']['host'])) {
     $username = $config['obihai']['credentials']['username'];
     $password = $config['obihai']['credentials']['password'];
     $scheme = $config['obihai']['scheme'];
-    $sid = $config['twilio']['sid'];
-    $authToken = $config['twilio']['token'];
+    $sid = $config['twilio']['apikey']['sid'];
+    $secret = $config['twilio']['apikey']['secret'];
 
   } else {
  die('Software must be configured.');
  }
 $phonenumber = '17136499932';
 try {
- twilioNomorobo($sid, $authToken, $callee = '+17136331642', $phonenumber);
+ $spamresult = twilioNomorobo($sid, $secret, $callee = '+17136331642', $phonenumber);
 } catch (Exception $e) {
     echo $e->getMessage();
 }
+echo $spamresult;
+/*
+{"caller_name": null, "country_code": "US", "phone_number": "+17136499932", "national_format": "(713) 649-9932", "carrier": null, "add_ons": {"status": "successful", "message": null, "code": null, "results": {"nomorobo_spamscore": {"status": "successful", "request_sid": "XR6bef232676734d863c84fa63060c1db6", "message": null, "code": null, "result": {"status": "success", "message": "success", "score": 0, "neighbor_score": 0}}}}, "url": "https://lookups.twilio.com/v1/PhoneNumbers/+17136499932"}
+*/

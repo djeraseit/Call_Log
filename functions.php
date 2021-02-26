@@ -690,7 +690,7 @@ try {
 return $raw_response;
 }
 
-function getCurrentCaller() {
+function getCurrentCaller($obihai = null) {
   $config = require __DIR__.'/config.php';
 
 $pagename = 'callstatus.htm';

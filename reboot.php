@@ -76,4 +76,4 @@ try {
      throw new Exception($ex);
 }
 
-echo "Rebooting";
+echo json_encode(['status'=>$status,'message'=>"Rebooting"]);

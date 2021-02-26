@@ -30,7 +30,7 @@ require_once(__DIR__.'/functions.php');
 $currentcaller = null;
 while(!empty($currentcaller)) {
 try {
-$currentcaller = getCurrentCaller();
+$currentcaller = getCurrentCaller($obihai = null);
 } catch (Exception $e) {
 echo $e-getMessage();
 }
