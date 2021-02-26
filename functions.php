@@ -612,6 +612,21 @@ return($validationResult);
    // & format = 1
 
 }
+
+function getObihaiCredentials() {
+  $config = require __DIR__.'/config.php';
+
+if (isset($config['obihai']['credentials']['host'])) {
+   $host = $config['obihai']['credentials']['host'];
+   $username = $config['obihai']['credentials']['username'];
+   $password = $config['obihai']['credentials']['password'];
+   $scheme = $config['obihai']['credentials']['scheme'];
+ } else {
+      die('Software must be configured.');
+}
+return $config['obihai']['credentials'];
+}
+
 function twilioEkataInstall(){
   $authorization = $sid . ":" . $authToken;
   $addOns = array('AvailableAddOnSid'=>'XB65bee4ad5be08e28368def1be1a3efee',
