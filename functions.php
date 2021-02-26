@@ -612,7 +612,52 @@ return($validationResult);
    // & format = 1
 
 }
+function twilioEkataInstall(){
+  $authorization = $sid . ":" . $authToken;
+  $addOns = array('AvailableAddOnSid'=>'XB65bee4ad5be08e28368def1be1a3efee',
+  'AcceptTermsOfService'=>'true','Configuration'=>'{}');
+  $url ='https://preview.twilio.com/marketplace/InstalledAddOns';
 
+  //-u $TWILIO_ACCOUNT_SID:$TWILIO_AUTH_TOKEN
+$options = array(
+  CURLOPT_URL            => $url,
+  CURLOPT_HEADER         => false,
+  CURLOPT_POST  => true,
+  CURLOPT_POSTFIELDS => $addOns,    
+  CURLOPT_VERBOSE        => false,
+  CURLOPT_RETURNTRANSFER => true,
+  CURLOPT_USERAGENT => 'CallBlocker',
+  CURLOPT_FOLLOWLOCATION => true,
+  //CURLOPT_NOPROXY => '*', // do not use proxy
+  CURLOPT_SSL_VERIFYPEER => true,    // for https
+  CURLOPT_TIMEOUT => 5,
+  CURLOPT_CONNECTTIMEOUT => 5,
+  CURLOPT_USERPWD => $authorization,
+  CURLOPT_REFERER => 'https://www.theodis.com',
+  CURLOPT_HTTPAUTH => CURLAUTH_BASIC
+);
+
+$ch = curl_init();
+curl_setopt_array( $ch, $options );
+$output = curl_exec($ch);
+
+ //curl_setopt($ch, CURLOPT_PROXY, "proxy.YOURSITE.com");
+ //curl_setopt($ch, CURLOPT_PROXYPORT, 8080);
+ //curl_setopt ($ch, CURLOPT_PROXYUSERPWD, "username:password"); 
+
+  // validate CURL status
+  if(curl_errno($ch))
+     throw new Exception(curl_error($ch), 500);
+  // validate HTTP status code (user/password credential issues)
+  $status_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+  if ($status_code != 200)
+      throw new Exception("Response with Status Code [" . $status_code . "]." . $output, 500);
+
+ curl_close($ch);
+
+ return $output;
+
+}
 function twilioNomorobo($sid, $authToken, $callee = '+17136331642', $phonenumber){
   $authorization = $sid . ":" . $authToken;
   $addOns = array('AddOns'=>'nomorobo_spamscore','AddOns.nomorobo_spamscore.secondary_address'=>$callee);
