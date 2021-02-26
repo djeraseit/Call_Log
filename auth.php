@@ -45,7 +45,7 @@ $options = array(
     CURLOPT_FOLLOWLOCATION => true,
     CURLOPT_NOPROXY => '*', // do not use proxy
     CURLOPT_SSL_VERIFYPEER => false,    // for https
-    CURLOPT_USERPWD        => $username . ":" . $password,
+    CURLOPT_USERPWD        => $connect['username'] . ":" . $connect['password'],
     CURLOPT_HTTPAUTH       => CURLAUTH_DIGEST
 );
 
