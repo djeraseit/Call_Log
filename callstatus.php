@@ -27,15 +27,12 @@
 
 $config = require __DIR__.'/config.php';
 require_once(__DIR__.'/functions.php');
-
+$currentcaller = null;
+while(!empty($currentcaller)) {
 try {
 $currentcaller = getCurrentCaller();
 } catch (Exception $e) {
 echo $e-getMessage();
 }
-
-if (empty($currentcaller)) {
-  echo "No current callers.";
-} else {
-  echo $currentcaller; // return current caller in json
+return $currentcaller;
 }
