@@ -434,6 +434,213 @@ $currentcall = array('State'=>$callState,'Name'=>$callerName,'Number'=>$callerNu
 return json_encode($currentcall);
 }
 
+function socket_connect_timeout($host, $port, $timeout=100){
+
+  $socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
+
+  /**
+   * Set the send and receive timeouts super low so that socket_connect
+   * will return to us quickly. We then loop and check the real timeout
+   * and check the socket error to decide if its conected yet or not.
+   */
+  $connect_timeval = array(
+      "sec"=>0,
+      "usec" => 100
+  );
+  socket_set_option(
+      $socket,
+      SOL_SOCKET,
+      SO_SNDTIMEO,
+      $connect_timeval
+  );
+  socket_set_option(
+      $socket,
+      SOL_SOCKET,
+      SO_RCVTIMEO,
+      $connect_timeval
+  );
+
+  $now = microtime(true);
+
+  /**
+   * Loop calling socket_connect. As long as the error is 115 (in progress)
+   * or 114 (already called) and our timeout has not been reached, keep
+   * trying.
+   */
+  $err = null;
+  $socket_connected = false;
+  do{
+      socket_clear_error($socket);
+      $socket_connected = @socket_connect($socket, $host, $port);
+      $err = socket_last_error($socket);
+      $elapsed = (microtime(true) - $now) * 1000;
+  }
+  while (($err === 115 || $err === 114) && $elapsed < $timeout);
+
+  /**
+   * For some reason, socket_connect can return true even when it is
+   * not connected. Make sure it returned true the last error is zero
+   */
+  $socket_connected = $socket_connected && $err === 0;
+
+  if($socket_connected){
+
+      /**
+       * Set keep alive on so the other side does not drop us
+       */
+      socket_set_option($socket, SOL_SOCKET, SO_KEEPALIVE, 1);
+
+      /**
+       * set the real send/receive timeouts here now that we are connected
+       */
+      $timeval = array(
+          "sec" => 0,
+          "usec" => 0
+      );
+      if($timeout >= 1000){
+          $ts_seconds = $timeout / 1000;
+          $timeval["sec"] = floor($ts_seconds);
+          $timeval["usec"] = ($ts_seconds - $timeval["sec"]) * 1000000;
+      } else {
+          $timeval["usec"] = $timeout * 1000;
+      }
+      socket_set_option(
+          $socket,
+          SOL_SOCKET,
+          SO_SNDTIMEO,
+          $timeval
+      );
+      socket_set_option(
+          $socket,
+          SOL_SOCKET,
+          SO_RCVTIMEO,
+          $timeval
+      );
+
+  } else {
+
+      $elapsed = round($elapsed, 4);
+
+      if(!is_null($err) && $err !== 0 && $err !== 114 && $err !== 115){
+          $message = "Failed to connect to $host:$port. ($err: ".socket_strerror($err)."; after {$elapsed}ms)";
+      } else {
+          $message = "Failed to connect to $host:$port. (timed out after {$elapsed}ms)";
+      }
+
+      throw new Exception($message);
+
+  }
+
+  return $socket;
+
+}
+
+function testObihaiConnectivity() {
+ /* Get the port for the WWW service. */
+$service_port = 80;
+
+/* Get the IP address for the target host. */
+$address = "192.168.42.3";
+
+/* Create a TCP/IP socket. */
+$socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
+if ($socket === false) {
+    echo "socket_create() failed: reason: " . socket_strerror(socket_last_error()) . "\n";
+} else {
+    echo "OK.\n";
+}
+
+echo "Attempting to connect to '$address' on port '$service_port'...";
+$result = socket_connect($socket, $address, $service_port);
+if ($result === false) {
+    echo "socket_connect() failed.\nReason: ($result) " . socket_strerror(socket_last_error($socket)) . "\n";
+} else {
+    echo "OK.\n";
+}
+
+$in = "GET / HTTP/1.1\r\n";
+$in .= "Host: {$address}\r\n";
+$in .= "Connection: Close\r\n\r\n";
+$out = '';
+
+socket_write($socket, $in, strlen($in));
+
+echo "Reading response:\n\n";
+while ($out = socket_read($socket, 512)) {
+    echo $out;
+}
+
+socket_close($socket);
+
+if(!empty($out)) {
+  $status = "online";
+} else {
+  $status = "offline";
+}
+return $status;
+}
+
+function userDigitMapsJson($xmldata) {
+  libxml_use_internal_errors(true);
+  $xmlDoc = new DOMDocument();
+  $xmlDoc->preserveWhiteSpace = false;
+  $xmlDoc->validateOnParse = true;
+  $xmlDoc->encoding = "utf-8";
+  $xmlDoc->loadXML($xmldata);
+  //print $xmlDoc->saveXML();
+  //die();
+  //$i = $xmlDoc->documentElement;
+  $fields = $xmlDoc->getElementsByTagName('parameter');
+
+  foreach ($fields as $field){
+   // var_dump($field);
+   // die();
+    $childNodes = $field->childNodes;
+   // var_dump($childNodes);
+    foreach ($childNodes as $child){
+      echo $child->nodeName;
+      echo $child->nodeValue;
+     // echo getNextSibling($child);
+    }
+    //var_dump($field);
+  //die();
+    //$label = $field->getElementsByTagName('object')->item(0)->nodeValue;
+    //$label = $field->getElementsByTagName('parameter')->nodeValue;
+    //echo $field->getElementsByTagName('syntax')->item(0)->nodeValue;
+    //echo $label;
+  }
+  //foreach ($i->childNodes as $item){
+  //  print $item->nodeName . " = " . $item->nodeValue . PHP_EOL;
+  //}
+  /*
+  die();
+  $json = json_encode($xml);
+  print_r($json);
+  $array = json_decode($json,TRUE);
+//return $array;
+var_dump($array);
+die();
+
+  foreach ($array as $v => $digitmap) {
+  
+    foreach ($digitmap as $map){
+     
+     $historyname= $map['Terminal'][0]['Peer']['@attributes']['name'];
+     $historynumber = $map['Terminal'][0]['Peer']['@attributes']['number'];
+     $historydirection = $map['Terminal'][0]['@attributes']['dir'];
+     $historydate = $map['@attributes']['date'];
+     $historytime = $map['@attributes']['time'];
+     $historyevents = $map['Terminal'][0]['Event']; // array
+     // $callhistoryjson[] = $history;
+     $digitmapjson[] = ["Name"=> $historyname,"Number"=> $historynumber, "Direction"=> $historydirection,
+                        "Date"=> $historydate,"Time" => $historytime, "Events" => $historyevents];
+    }
+  }
+
+  return json_encode($digitmapjson);
+*/
+}
+
 function callHistoryJson($xmldata) {
   $xml = simplexml_load_string($xmldata, "SimpleXMLElement", LIBXML_NOCDATA);
   $json = json_encode($xml);

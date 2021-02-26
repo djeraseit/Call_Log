@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="default.xsl"?>
+<model reboot_req="false"><object name="User Defined Digit Map1" access="readWrite" minEntries="10" maxEntries="10"><pagetitle>
+User Defined Digit Maps
+</pagetitle><description>
+User Defined Digit Map 1
+</description><parameter name="Label" access="readWrite"><syntax><string><size maxLength="8">
+</size></string></syntax><value hash="3a22aa20" type="input" default="ipd">
+</value></parameter><parameter name="DigitMap" access="readWrite"><syntax><string><size maxLength="1024">
+</size></string></syntax><value hash="de719cf" type="input" default="(xx.&lt;*:@&gt;xx?x?&lt;*:.&gt;xx?x?&lt;*:.&gt;xx?x?&lt;*:.&gt;xx?x?|xx.&lt;*:@&gt;xx?x?&lt;*:.&gt;xx?x?&lt;*:.&gt;xx?x?&lt;*:.&gt;xx?x?&lt;*::&gt;xx?x?x?x?)">
+</value></parameter></object><object name="User Defined Digit Map2" access="readWrite" minEntries="10" maxEntries="10"><parameter name="Label" access="readWrite"><syntax><string><size maxLength="8">
+</size></string></syntax><value hash="871ce6e1" type="input" default="">
+</value></parameter><parameter name="DigitMap" access="readWrite"><syntax><string><size maxLength="1024">
+</size></string></syntax><value hash="11f1aaf0" type="input" default="">
+</value></parameter></object><object name="User Defined Digit Map3" access="readWrite" minEntries="10" maxEntries="10"><parameter name="Label" access="readWrite"><syntax><string><size maxLength="8">
+</size></string></syntax><value hash="d41723a2" type="input" default="">
+</value></parameter><parameter name="DigitMap" access="readWrite"><syntax><string><size maxLength="1024">
+</size></string></syntax><value hash="15fc3c11" type="input" default="">
+</value></parameter></object><object name="User Defined Digit Map4" access="readWrite" minEntries="10" maxEntries="10"><parameter name="Label" access="readWrite"><syntax><string><size maxLength="8">
+</size></string></syntax><value hash="21116063" type="input" default="">
+</value></parameter><parameter name="DigitMap" access="readWrite"><syntax><string><size maxLength="1024">
+</size></string></syntax><value hash="1a06cd32" type="input" default="">
+</value></parameter></object><object name="User Defined Digit Map5" access="readWrite" minEntries="10" maxEntries="10"><parameter name="Label" access="readWrite"><syntax><string><size maxLength="8">
+</size></string></syntax><value hash="6e0b9d24" type="input" default="">
+</value></parameter><parameter name="DigitMap" access="readWrite"><syntax><string><size maxLength="1024">
+</size></string></syntax><value hash="1e115e53" type="input" default="">
+</value></parameter></object><object name="User Defined Digit Map6" access="readWrite" minEntries="10" maxEntries="10"><parameter name="Label" access="readWrite"><syntax><string><size maxLength="8">
+</size></string></syntax><value hash="bb05d9e5" type="input" default="">
+</value></parameter><parameter name="DigitMap" access="readWrite"><syntax><string><size maxLength="1024">
+</size></string></syntax><value hash="221bef74" type="input" default="">
+</value></parameter></object><object name="User Defined Digit Map7" access="readWrite" minEntries="10" maxEntries="10"><parameter name="Label" access="readWrite"><syntax><string><size maxLength="8">
+</size></string></syntax><value hash="80016a6" type="input" default="">
+</value></parameter><parameter name="DigitMap" access="readWrite"><syntax><string><size maxLength="1024">
+</size></string></syntax><value hash="26268095" type="input" default="">
+</value></parameter></object><object name="User Defined Digit Map8" access="readWrite" minEntries="10" maxEntries="10"><parameter name="Label" access="readWrite"><syntax><string><size maxLength="8">
+</size></string></syntax><value hash="54fa5367" type="input" default="">
+</value></parameter><parameter name="DigitMap" access="readWrite"><syntax><string><size maxLength="1024">
+</size></string></syntax><value hash="2a3111b6" type="input" default="">
+</value></parameter></object><object name="User Defined Digit Map9" access="readWrite" minEntries="10" maxEntries="10"><parameter name="Label" access="readWrite"><syntax><string><size maxLength="8">
+</size></string></syntax><value hash="a1f49028" type="input" default="">
+</value></parameter><parameter name="DigitMap" access="readWrite"><syntax><string><size maxLength="1024">
+</size></string></syntax><value hash="2e3ba2d7" type="input" default="">
+</value></parameter></object><object name="User Defined Digit Map10" access="readWrite" minEntries="10" maxEntries="10"><parameter name="Label" access="readWrite"><syntax><string><size maxLength="8">
+</size></string></syntax><value hash="d0f50890" type="input" default="">
+</value></parameter><parameter name="DigitMap" access="readWrite"><syntax><string><size maxLength="1024">
+</size></string></syntax><value hash="3f42223f" type="input" default="">
+</value></parameter></object></model>

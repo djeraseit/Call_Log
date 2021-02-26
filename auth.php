@@ -28,46 +28,35 @@
 $config = require __DIR__.'/config.php';
 require_once(__DIR__.'/functions.php');
 
-
-if (isset($config['obihai']['host'])) {
-    $host = $config['obihai']['host'];
-    $username = $config['obihai']['credentials']['username'];
-    $password = $config['obihai']['credentials']['password'];
-    $scheme = $config['obihai']['scheme'];
-  } else {
- die('Software must be configured.');
- }
- 
+$connect = getObihaiCredentials();
 
 $pagename = 'callhistory.htm';
 
-
-$opencnam = 'https://api.opencnam.com/v2/phone/+155555555';
+//$opencnam = 'https://api.opencnam.com/v2/phone/+155555555';
 
 $item = null;
 $pagenum = 0;
-
-
+$url = "{$connect['scheme']}://{$connect['host']}/{$pagename}?{$pagenum}";
+$options = array(
+    CURLOPT_URL            => $url,
+    CURLOPT_HEADER         => true,    
+    CURLOPT_VERBOSE        => true,
+    CURLOPT_RETURNTRANSFER => true,
+    CURLOPT_FOLLOWLOCATION => true,
+    CURLOPT_NOPROXY => '*', // do not use proxy
+    CURLOPT_SSL_VERIFYPEER => false,    // for https
+    CURLOPT_USERPWD        => $username . ":" . $password,
+    CURLOPT_HTTPAUTH       => CURLAUTH_DIGEST
+);
 
 $ch = curl_init();
 
 curl_setopt_array( $ch, $options );
 for ($pagenum = 0; $pagenum <=3; $pagenum) {
     
-    $url = "{$scheme}://{$host}/{$pagename}?{$pagenum}";
+    $url = "{$connect['scheme']}://{$connect['host']}/{$pagename}?{$pagenum}";
+    curl_setopt($ch, CURLOPT_URL, $url); 
 
-
-    $options = array(
-        CURLOPT_URL            => $url,
-        CURLOPT_HEADER         => false,    
-        CURLOPT_VERBOSE        => false,
-        CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_FOLLOWLOCATION => true,
-        CURLOPT_NOPROXY => '*', // do not use proxy
-        CURLOPT_SSL_VERIFYPEER => false,    // for https
-        CURLOPT_USERPWD        => $username . ":" . $password,
-        CURLOPT_HTTPAUTH       => CURLAUTH_DIGEST
-);
     
     echo "The page number is $pagenum" . PHP_EOL;
 

@@ -37,8 +37,10 @@ $url = "{$connect['scheme']}://{$connect['host']}/{$pagename}";
 
 $options = array(
         CURLOPT_URL            => $url,
+        CURLOPT_HEADER         => false,    
+        CURLOPT_VERBOSE        => false,
         CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-        CURLOPT_IGNORE_CONTENT_LENGTH=> true,
+        CURLOPT_IGNORE_CONTENT_LENGTH => true,
         CURLOPT_TCP_KEEPALIVE => 1,
         CURLOPT_TCP_KEEPIDLE => 2,
         CURLOPT_RETURNTRANSFER => true,
@@ -53,27 +55,27 @@ $options = array(
         CURLOPT_NOPROXY => '*', // do not use proxy
 );
 
+
 $ch = curl_init();
 
 curl_setopt_array( $ch, $options );
 
-try {
-  $raw_response  = curl_exec( $ch );
+$raw_response  = curl_exec( $ch );
+
+  //print_r($raw_response);
 
   // validate CURL status
-  if(curl_errno($ch))
+    if(curl_errno($ch))
      throw new Exception(curl_error($ch), 500);
   // validate HTTP status code (user/password credential issues)
   $status_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-  if ($status_code != 200)
+    if ($status_code != 200)
       throw new Exception("Response with Status Code [" . $status_code . "].", 500);
-}
 
- catch(Exception $ex) {
     if ($ch != null) curl_close($ch);
-     throw new Exception($ex);
-}
 
-echo $raw_response;
+   
+    echo userDigitMapsJson($raw_response);
+    
 //$jsonresponse = callHistoryJson($raw_response);
 //file_put_contents('user_digit_maps.json',$jsonresponse, LOCK_EX); //append?
