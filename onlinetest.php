@@ -105,15 +105,13 @@
 $config = require __DIR__.'/config.php';
 require_once(__DIR__.'/functions.php');
 
-/* Get the port for the WWW service. */
 $port = 80;
-
-/* Get the IP address for the target host. */
 $host = "192.168.42.2";
+$timeout = 100;
 
 $result = null;
 try {
-$result = socket_connect_timeout($host, $port, $timeout=100);
+$result = socket_connect_timeout($host, $port, $timeout);
 } catch (Exception $e) {
 echo $e->getMessage();
 }

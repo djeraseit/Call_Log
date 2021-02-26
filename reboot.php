@@ -28,21 +28,22 @@
 $config = require __DIR__.'/config.php';
 require_once(__DIR__.'/functions.php');
 
-if (isset($config['obihai']['host'])) {
-   $host = $config['obihai']['host'];
-   $username = $config['obihai']['credentials']['username'];
-   $password = $config['obihai']['credentials']['password'];
-   $scheme = $config['obihai']['scheme'];
- } else {
- $host = '192.168.42.2';
- $username = "admin";
- $password = "admin";
- $scheme = "http";
- }
 
+$connect = getObihaiCredentials();
+
+ $timeout = 100;
+ 
+ $result = null;
+ try {
+ $result = socket_connect_timeout($connect['host'], $connect['port'], $timeout);
+ } catch (Exception $e) {
+ echo $e->getMessage();
+ }
+ 
+ //var_dump($result);
 $pagename = 'rebootgetconfig.htm';
 
-$url = "{$scheme}://{$host}/{$pagename}";
+$url = "{$connect['scheme']}://{$connect['host']}/{$pagename}";
 
 $options = array(
         CURLOPT_URL            => $url,
@@ -51,7 +52,7 @@ $options = array(
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_FOLLOWLOCATION => true,
         CURLOPT_SSL_VERIFYPEER => false,    // for https
-        CURLOPT_USERPWD        => $username . ":" . $password,
+        CURLOPT_USERPWD        => $connect['username'] . ":" . $connect['password'],
         CURLOPT_HTTPAUTH       => CURLAUTH_DIGEST
 );
 
@@ -76,4 +77,6 @@ try {
      throw new Exception($ex);
 }
 
-echo json_encode(['status'=>$status,'message'=>"Rebooting"]);
+//var_dump($raw_response);
+
+echo json_encode(['status'=>$status_code,'message'=>"Rebooting"]);
