@@ -27,6 +27,8 @@
 
 //php pollhook.php --obihai_host 192.168.42.2 --obihai_user admin --obihai_pass megalith
 
+set_time_limit (0);
+
 $config = require_once(__DIR__.'/config.php');
 require_once(__DIR__.'/functions.php');
 

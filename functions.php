@@ -152,7 +152,6 @@ function pb_alert($pbtoken = null,$payload = array()) {
  curl_setopt_array( $ch, $options );
  $output = curl_exec($ch);
 
-
   // validate CURL status
   if(curl_errno($ch))
      throw new Exception(curl_error($ch), 500);
@@ -955,6 +954,71 @@ try {
 }
 
 return $raw_response;
+}
+
+function parseSystemStatus($xml){
+
+$doc = new DOMDocument();
+libxml_use_internal_errors(true);
+$doc->validateOnParse = true;
+$doc->loadXML($xml);
+$doc->preserveWhiteSpace = false;
+
+$activetable = $doc->getElementsByTagName('table')->item(0);
+
+foreach($activetable->getElementsByTagName('tr') as $tractive) {
+$tdactive = $tractive->getElementsByTagName('td');
+$activecallfield = $tdactive->item(0)->nodeValue;
+
+}
+
+$currentcall = [];
+$call = [];
+
+$calltable = $doc->getElementsByTagName('table')->item(1);
+
+if ( $totalactivecalls >= 1 ){
+$callremove = $doc->getElementsByTagName('form')->item(0)->getAttribute('action');
+$formarray = explode("=",$callremove);
+$callItem = $formarray[1];
+
+// iterate over each row in the table
+foreach($calltable->getElementsByTagName('tr') as $tr)
+{
+    $tds = $tr->getElementsByTagName('td'); // get the columns in this row
+    if($tds->length >= 2 && !(empty($tds->item(1))))
+    {
+      $calltimes = $tds->item(0)->nodeValue; // possibly for start and end call times
+      $callinfo = $tds->item(1)->nodeValue;
+        if (!empty($callinfo)) $call[] = $callinfo; // B            
+    }
+}
+// Future parse multiple calls (i.e. second table) if active calls >=1
+
+// 0 - Call 1
+// 1 - Terminal ID
+// 2 - State
+// 3 - Peer Name
+// 4 - Peer Number
+// 5 - Start Time
+// 6 - Duration
+// 7 - Direction
+// 8 - Item for recording or hanging up
+
+
+$callState = ucfirst($call[2]);
+$callerName = $call[3];
+$callerNumber = $call[4];
+$callStart = $call[5];
+$callDuration = $call[6];
+$callDirection = $call[7];
+
+$currentcall = array('State'=>$callState,'Name'=>$callerName,'Number'=>$callerNumber,'StartTime'=>$callStart,'Duration'=>$callDuration,
+'Direction'=>$callDirection, 'Item'=>$callItem,'ActiveCalls'=> $totalactivecalls);
+} //end if statement
+
+return json_encode($currentcall);
+
 }
 
 function getCurrentCaller($obihai = null) {

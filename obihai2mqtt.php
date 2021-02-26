@@ -25,9 +25,9 @@
 * along with this program.  If not, see https://www.gnu.org/licenses/gpl-3.0.en.html.
 */
 
-
 //php obihai2mqtt.php --obihai_host 192.168.42.2 --obihai_user admin --obihai_pass megalith --mqtt_host eagle.rmq.cloudamqp.com --mqtt_user rcndzvbo:rcndzvbo --mqtt_topic obihai --mqtt_pass E-BaZornNc1uuSID1kjuVmzDsj1UrxVY
 
+set_time_limit (0);
 require __DIR__ . '/phpMQTT.php';
 
 $longOpts = array(

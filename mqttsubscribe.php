@@ -25,7 +25,7 @@
 * along with this program.  If not, see https://www.gnu.org/licenses/gpl-3.0.en.html.
 */
 
-
+set_time_limit (0);
 
 require(__DIR__."/phpMQTT.php");
 $config = require __DIR__.'/config.php';
